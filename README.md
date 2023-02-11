@@ -24,7 +24,7 @@ The process begins by utilizing the [Temp-Mail](https://temp-mail.org/en/) servi
 
 First, clone this repository:
 ```shell
-git clone https://github.com/qing762/ExitLag-auto-signup/
+git clone https://github.com/qing762/exitLag-auto-signup/
 ```
 Install the necessary dependencies:
 ```shell
@@ -57,7 +57,7 @@ I'm not sure but mostly it is as it bypasses Cloudflare's bot check.
 
 #### Do you plan to update it if it's patched?
 
-Unfortunately, I have no plans of updating this project for now. But you can [create an issue](https://github.com/qing762/ExitLag-auto-signup/issues/new/) if there is a problem within my code.
+Unfortunately, I have no plans of updating this project for now. But you can [create an issue](https://github.com/qing762/exitLag-auto-signup/issues/new/) if there is a problem within my code.
 
 
 #### Any plans on improving the project?
