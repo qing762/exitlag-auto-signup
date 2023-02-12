@@ -22,7 +22,7 @@ MMMMMMMMMMMMMM                                             .88          88      
 time.sleep(3)
 
 key = input(f"\nPlease locate to this URL.\nhttps://hcaptcha.projecttac.com/?sitekey={sitekey}\nComplete the hCaptcha and paste in the h-captcha-response by pressing the copy button.\n")
-kk = input(f"\nInput your password for your account. Your password must be at least 6 characters. If you want to stay on the default password, ignore this and press enter:")
+kk = input(f"\nInput your password for your account. Your password must be at least 6 characters. If you prefer to stay with the default password, ignore this and press enter:")
 
 if kk == "":
   kk = "1234567890"
@@ -39,11 +39,15 @@ scraper = cloudscraper.create_scraper(disableCloudflareV1=True,
 )
 
 reque = scraper.post(url)
-print(f"\nEmail request responded with a status code of {reque.status_code}")
-dat = json.loads(reque.text)
-addr = dat["mailbox"]
-token = dat["token"]
-print(f"Fetching email address success!\n\nToken: {token}\nEmail address: {addr}\n")
+if reque.status_code == 200:
+  print(f"\nEmail request successfully responded with a status code of {reque.status_code}")
+  dat = json.loads(reque.text)
+  addr = dat["mailbox"]
+  token = dat["token"]
+  print(f"Fetching email address success!\n\nToken: {token}\nEmail address: {addr}\n")
+else:
+  print("Fetch email address fail!\nExiting...")
+  exit(reque.status_code)
 
 exitlagpayload = {
   "email": addr,
@@ -57,17 +61,21 @@ exitlagpayload = {
 }
 
 req = requests.post(exitlagreg, data=exitlagpayload)
-print(f"\nExitLag request responded with a status code of {req.status_code}")
-data = json.loads(req.text)
-tok = data["token"]
-meid = data["me"]["id"]
-banned = data["me"]["ban"]
-email_approved = data["me"]["email_approved"]
-lan = data["me"]["locale"]
-permission_provider = data["me"]["permission_provider"]
+if req.status_code == 200:
+  print(f"\nExitLag request responded with a status code of {req.status_code}")
+  data = json.loads(req.text)
+  tok = data["token"]
+  meid = data["me"]["id"]
+  banned = data["me"]["ban"]
+  email_approved = data["me"]["email_approved"]
+  lan = data["me"]["locale"]
+  permission_provider = data["me"]["permission_provider"]
 
-print(f"ExitLag account registration has completed with the id of {meid}.\n")
-print(f"Token: {tok}\nID: {meid}\nBanned?: {banned}\nEmail approved status: {email_approved}\nLocale: {lan}\nPermission provider: {permission_provider}\n")
+  print(f"ExitLag account registration has completed with the id of {meid}.\n")
+  print(f"Token: {tok}\nID: {meid}\nBanned?: {banned}\nEmail approved status: {email_approved}\nLocale: {lan}\nPermission provider: {permission_provider}\n")
+else:
+  print("ExitLag account registration failed!\nExiting...")
+  exit(req.status_code)
 
 header = {
   "authorization": token,
@@ -112,28 +120,37 @@ time.sleep(1)
 print("\rPlease wait.", end="")
 time.sleep(1)
 print("\r", end="")
+
 msg = scraper.get(messageurl, headers=header)
-msgtxt = msg.text
-da = json.loads(msgtxt)
-print(f"Fetch email data request responded with a status code of {msg.status_code}\n")
-for x in da["messages"]:
-  emailid = x["_id"]
-  recievedat = datetime.datetime.fromtimestamp(x["receivedAt"]).strftime('%Y-%m-%d %H:%M:%S')
-  fr = x["from"]
-  subject = x["subject"]
-  bodyPreview = x["bodyPreview"]
-  attachmentsCount = x["attachmentsCount"]
-print(f"Email ID: {emailid}\nRecieved at: {recievedat}\nFrom: {fr}\nSubject: {subject}\nBody Preview: {bodyPreview}\nAttachments count: {attachmentsCount}\n")
+if msg.status_code == 200:
+  msgtxt = msg.text
+  da = json.loads(msgtxt)
+  print(f"Fetch email data request responded with a status code of {msg.status_code}\n")
+  for x in da["messages"]:
+    emailid = x["_id"]
+    recievedat = datetime.datetime.fromtimestamp(x["receivedAt"]).strftime('%Y-%m-%d %H:%M:%S')
+    fr = x["from"]
+    subject = x["subject"]
+    bodyPreview = x["bodyPreview"]
+    attachmentsCount = x["attachmentsCount"]
+  print(f"Email ID: {emailid}\nRecieved at: {recievedat}\nFrom: {fr}\nSubject: {subject}\nBody Preview: {bodyPreview}\nAttachments count: {attachmentsCount}\n")
+else:
+  print("Fetch email data fail!\nExiting...")
+  exit(msg.status_code)
 
 exitlagverifycontent = f"https://web2.temp-mail.org/messages/{emailid}"
 ct = scraper.get(exitlagverifycontent, headers=header)
-txt = json.loads(ct.text)
-soup = BeautifulSoup(txt["bodyHtml"], 'html.parser')
-match = re.search(r"https://www.exitlag.com/verify/email/\w+", str(soup))
+if ct.status_code == 200:
+  txt = json.loads(ct.text)
+  soup = BeautifulSoup(txt["bodyHtml"], 'html.parser')
+  match = re.search(r"https://www.exitlag.com/verify/email/\w+", str(soup))
 
-if match:
-  link = match.group()
-  print(f"Please click this URL to verify your email address on ExitLag.\n{link}")
-  print(f"\nTo login to ExitLag with your email address created just now, use the following email address: \n{addr}\nand the following password:\n{kk}")
+  if match:
+    link = match.group()
+    print(f"Please click this URL to verify your email address on ExitLag.\n{link}")
+    print(f"\nTo login to ExitLag with your email address created just now, use the following email address: \n{addr}\nand the following password:\n{kk}")
+  else:
+    print("Link not found!")
 else:
-  print("Link not found!")
+  print("Fetch ExitLag verify url failed!\nExiting...")
+  exit(ct.status_code)
