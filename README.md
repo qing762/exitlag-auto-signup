@@ -15,8 +15,9 @@ The process begins by utilizing the [Temp-Mail](https://temp-mail.org/en/) servi
 
 ## Features
 
-- Be able to prompt to change to your own password instead of using the default one
+- Be able to prompt to change to your own password instead of using the default one.
 - Bypass Cloudflare's bot check.
+- Error handling.
 
 > **Warning**
 > It is important to note that excessive usage of this tool may result in rate limiting by the API or, in severe cases, IP blocking. To avoid these potential consequences, it is recommended to limit the number of usage. (Maybe 5 times every 10 minutes?)
