@@ -47,8 +47,6 @@ To contribute, fork this repository and improve it. After that, press the contri
 
 Due to persistent high ping of over 100 while participating in online gaming sessions with my peers, I frequently experienced disconnections from game servers. However, after utilizing ExitLag, my ping was reduced to a more manageable level of 40+. Despite the positive outcome, I was dissatisfied with the cumbersome sign-up process. As a result, I elected to develop a custom code solution that would automate this process, also eliminating the need for monetary expenditure.
 
-Additionally, as the school holiday approached, I found myself with an abundance of free time due to a lack of pressing obligations. To combat boredom, I decided to devote my weekends to this project, which provided a productive and educational outlet for my leisure time.
-
 #### Is it bannable?
 
 I'm not sure but mostly it is as it bypasses Cloudflare's bot check as well as Google's Recaptcha.
