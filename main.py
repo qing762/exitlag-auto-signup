@@ -115,5 +115,5 @@ with DriverContext(uc=True, headless=False) as browser:
         finally:
             browser.quit()
             print(f"Your email address: {email}\nYour password: {passw}\n")
-            print("Have fun using ExitLag!\n")
+            print("Have fun using ExitLag!")
             exit()
