@@ -5,19 +5,17 @@
 
 A tool that auto fetch a temporary email address and creates an account at https://exitlag.com/
 
-
-
-
 ## How it works
 
-The process begins by utilizing the [Temp-Mail](https://temp-mail.org/en/) service to obtain a temporary email address. This email address is then utilized to sign up for an [ExitLag](https://exitlag.com) account. Subsequently, another request is made to [Temp-Mail](https://temp-mail.org/en/) to retrieve the email confirmation link. Upon activation of the account, the user is able to log in to the ExitLag application and benefit from its functionality.
+The process begins by utilizing the [Mail.TM](https://mail.tm/) service to obtain a temporary email address. This email address is then utilized to sign up for an [ExitLag](https://exitlag.com) account. Subsequently, another request is made to [Mail.TM](https://mail.tm/) to retrieve the email confirmation link. Upon activation of the account, the user is able to log in to the ExitLag application and benefit from its functionality.
 
 
 ## Features
 
 - Be able to prompt to change to your own password instead of using the default one.
 - Bypass Cloudflare's bot check.
-- Error handling.
+- The script does all the job itself, includes the captcha (which in the past you need to do it manually)
+- ~~Error handling.~~ (im lazy to do it)
 
 > **Warning**
 > It is important to note that excessive usage of this tool may result in rate limiting by the API or, in severe cases, IP blocking. To avoid these potential consequences, it is recommended to limit the number of usage. (Maybe 5 times every 10 minutes?)
@@ -53,7 +51,7 @@ Additionally, as the school holiday approached, I found myself with an abundance
 
 #### Is it bannable?
 
-I'm not sure but mostly it is as it bypasses Cloudflare's bot check.
+I'm not sure but mostly it is as it bypasses Cloudflare's bot check as well as Google's Recaptcha.
 
 
 #### Do you plan to update it if it's patched?
@@ -64,9 +62,6 @@ Unfortunately, I have no plans of updating this project for now. But you can [cr
 #### Any plans on improving the project?
 
 Sadly, no.
-## Lessons Learned
-
-I initially perceived this task to be a formidable challenge, as circumventing Cloudflare's bot detection is known to be a complex and arduous process. However, with the aid of several dependencies, I was successful in resolving the issue. Through this experience, I was able to expand my knowledge and understanding of API requests.
 
 
 ## Feedback
