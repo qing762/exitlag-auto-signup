@@ -88,12 +88,12 @@ with DriverContext(uc=True, headless=False) as browser:
             headers={"Authorization": f"Bearer {token}"},
         ).json()
         if (
-            msg["hydra:member"][1]["intro"]
+            msg["hydra:member"][0]["intro"]
             == "Hello and welcome qing! You are now a step away from getting the best communications to improve your gameplay and get rid of…"
         ):
-            msgid = msg["hydra:member"][1]["id"]
-        else:
             msgid = msg["hydra:member"][0]["id"]
+        else:
+            msgid = msg["hydra:member"][1]["id"]
         fullmsg = request.get(
             f"https://api.mail.tm/messages/{msgid}",
             params={"id": f"{msgid}"},
