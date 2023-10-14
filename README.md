@@ -14,7 +14,7 @@ The process begins by utilizing the [Mail.TM](https://mail.tm/) service to obtai
 
 - Be able to prompt to change to your own password instead of using the default one.
 - Bypass Cloudflare's bot check.
-- The script does all the job itself, includes the captcha (which in the past you need to do it manually)
+- The script does all the job itself, including the captcha (which in the past you need to do it manually)
 - ~~Error handling.~~ (im too lazy to do it)
 
 > **Warning**
