@@ -1,156 +1,76 @@
-import requests, httpx, cloudscraper, json, datetime, time, re
-from bs4 import BeautifulSoup
+import string, random, time, re
+from selenium.webdriver.support.ui import WebDriverWait
+from requests_html import HTMLSession
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.by import By
+from selenium_stealth import stealth
+from seleniumbase import DriverContext
+from selenium.webdriver.support import expected_conditions as EC
 
-client = httpx.Client(http2=True)
+def get_random_string(length):
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(length))
 
-url = "https://web2.temp-mail.org/mailbox"
-exitlagreg = f"https://www.exitlag.com/api/v2/register"
-sitekey = "9ed0f8ae-3e13-4ea8-82eb-2c112b1bc89f"
-messageurl = "https://web2.temp-mail.org/messages"
-
-print(
-'''
-M"""""`'"""`YM                dP             dP                            oo                   d88888P .d8888P d8888b. 
-M  mm.  mm.  M                88             88                                                     d8' 88'         `88
-M  MMM  MMM  M .d8888b. .d888b88 .d8888b.    88d888b. dP    dP    .d8888b. dP 88d888b. .d8888b.    d8'  88baaa. .aaadP'
-M  MMM  MMM  M 88'  `88 88'  `88 88ooood8    88'  `88 88    88    88'  `88 88 88'  `88 88'  `88   d8'   88` `88 88'
-M  MMM  MMM  M 88.  .88 88.  .88 88.  ...    88.  .88 88.  .88    88.  .88 88 88    88 88.  .88  d8'    8b. .d8 88.
-M  MMM  MMM  M `88888P8 `88888P8 `88888P'    88Y8888' `8888P88    `8888P88 dP dP    dP `8888P88 d8'     `Y888P' Y88888P
-MMMMMMMMMMMMMM                                             .88          88                  .88
-                                                       d8888P           dP              d8888P
-                                                       ''')
-time.sleep(3)
-
-key = input(f"\nPlease locate to this URL.\nhttps://hcaptcha.projecttac.com/?sitekey={sitekey}\nComplete the hCaptcha and paste in the h-captcha-response by pressing the copy button.\n")
-kk = input(f"\nInput your password for your account. Your password must be at least 6 characters. If you prefer to stay with the default password, ignore this and press enter:")
-
-if kk == "":
-  kk = "1234567890"
+passw = input(f"\nInput your password for your account.\nIt is recommended for you to stay with the default password, ignore this and press enter\nIf you prefer to input your own password, you might need to manually verify the password strength at https://www.exitlag.com/register yourself.\nPassword: ")
+if passw == "":
+   passw = "Qing762.chy"
 else:
-  kk = kk
+   passw = passw
 
-scraper = cloudscraper.create_scraper(disableCloudflareV1=True, 
-    browser={
-        'browser': 'chrome',
-        'platform': 'ios',
-        'desktop': False,
-        'mobile': True
-    }
-)
+print("\nDue to the inner workings of the module, it is needed to browse programmatically.\nNEVER use the gui to navigate (Using your keybord and mouse) as it will causes POSSIBLE DETECTION!\nThe script will do the entire job itself.\n")
 
-reque = scraper.post(url)
-if reque.status_code == 200:
-  print(f"\nEmail request successfully responded with a status code of {reque.status_code}")
-  dat = json.loads(reque.text)
-  addr = dat["mailbox"]
-  token = dat["token"]
-  print(f"Fetching email address success!\n\nToken: {token}\nEmail address: {addr}\n")
-else:
-  print("Fetch email address fail!\nExiting...")
-  exit(reque.status_code)
+request = HTMLSession()
+domain = request.get("https://api.mail.tm/domains", params={"page": "1"}).json()
+for x in domain["hydra:member"]:
+  register = request.post("https://api.mail.tm/accounts", json={"address": f"{get_random_string(10)}@{x["domain"]}", "password": passw}).json()
+  email = register["address"]
+token = request.post("https://api.mail.tm/token", json={"address": email, "password": passw}).json()["token"]
 
-exitlagpayload = {
-  "email": addr,
-  "email_confirmation": addr,
-  "password": kk,
-  "password_confirmation": kk,
-  "refer_user": "0",
-  "refer_domain": "",
-  "recaptchaToken": key,
-  "locale": "en"
-}
+with DriverContext(uc=True, headless=False) as browser:
+   stealth(browser,
+         languages=["en-US", "en"],
+         vendor="Google Inc.",
+         platform="Win32",
+         webgl_vendor="Intel Inc.",
+         renderer="Intel Iris OpenGL Engine",
+         fix_hairline=True,
+   )
 
-req = requests.post(exitlagreg, data=exitlagpayload)
-if req.status_code == 200:
-  print(f"\nExitLag request responded with a status code of {req.status_code}")
-  data = json.loads(req.text)
-  tok = data["token"]
-  meid = data["me"]["id"]
-  banned = data["me"]["ban"]
-  email_approved = data["me"]["email_approved"]
-  lan = data["me"]["locale"]
-  permission_provider = data["me"]["permission_provider"]
-
-  print(f"ExitLag account registration has completed with the id of {meid}.\n")
-  print(f"Token: {tok}\nID: {meid}\nBanned?: {banned}\nEmail approved status: {email_approved}\nLocale: {lan}\nPermission provider: {permission_provider}\n")
-else:
-  print("ExitLag account registration failed!\nExiting...")
-  exit(req.status_code)
-
-header = {
-  "authorization": token,
-  "cache-control": "no-cache"
-}
-
-time.sleep(1)
-print("\rPlease wait.", end="")
-time.sleep(1)
-print("\rPlease wait..", end="")
-time.sleep(1)
-print("\rPlease wait...", end="")
-time.sleep(1)
-print("\rPlease wait....", end="")
-time.sleep(1)
-print("\rPlease wait.....", end="")
-time.sleep(1)
-print("\rPlease wait....", end="")
-time.sleep(1)
-print("\rPlease wait....", end="")
-time.sleep(1)
-print("\rPlease wait...", end="")
-time.sleep(1)
-print("\rPlease wait..", end="")
-time.sleep(1)
-print("\rPlease wait.", end="")
-time.sleep(1)
-print("\rPlease wait..", end="")
-time.sleep(1)
-print("\rPlease wait...", end="")
-time.sleep(1)
-print("\rPlease wait....", end="")
-time.sleep(1)
-print("\rPlease wait.....", end="")
-time.sleep(1)
-print("\rPlease wait....", end="")
-time.sleep(1)
-print("\rPlease wait...", end="")
-time.sleep(1)
-print("\rPlease wait..", end="")
-time.sleep(1)
-print("\rPlease wait.", end="")
-time.sleep(1)
-print("\r", end="")
-
-msg = scraper.get(messageurl, headers=header)
-if msg.status_code == 200:
-  msgtxt = msg.text
-  da = json.loads(msgtxt)
-  print(f"Fetch email data request responded with a status code of {msg.status_code}\n")
-  for x in da["messages"]:
-    emailid = x["_id"]
-    recievedat = datetime.datetime.fromtimestamp(x["receivedAt"]).strftime('%Y-%m-%d %H:%M:%S')
-    fr = x["from"]
-    subject = x["subject"]
-    bodyPreview = x["bodyPreview"]
-    attachmentsCount = x["attachmentsCount"]
-  print(f"Email ID: {emailid}\nRecieved at: {recievedat}\nFrom: {fr}\nSubject: {subject}\nBody Preview: {bodyPreview}\nAttachments count: {attachmentsCount}\n")
-else:
-  print("Fetch email data fail!\nExiting...")
-  exit(msg.status_code)
-
-exitlagverifycontent = f"https://web2.temp-mail.org/messages/{emailid}"
-ct = scraper.get(exitlagverifycontent, headers=header)
-if ct.status_code == 200:
-  txt = json.loads(ct.text)
-  soup = BeautifulSoup(txt["bodyHtml"], 'html.parser')
-  match = re.search(r"https://www.exitlag.com/verify/email/\w+", str(soup))
-
-  if match:
-    link = match.group()
-    print(f"Please click this URL to verify your email address on ExitLag.\n{link}")
-    print(f"\nTo login to ExitLag with your email address created just now, use the following email address: \n{addr}\nand the following password:\n{kk}")
-  else:
-    print("Link not found!")
-else:
-  print("Fetch ExitLag verify url failed!\nExiting...")
-  exit(ct.status_code)
+   browser.get('http://exitlag.com/register')
+   time.sleep(3)
+   firstnameelement = browser.find_element(By.NAME, "firstname")
+   firstnameelement.send_keys("qing")
+   lastnameelement = browser.find_element(By.NAME, "lastname")
+   lastnameelement.send_keys("chycr")
+   emailelement = browser.find_element(By.NAME, "email")
+   emailelement.send_keys(email)
+   passwordelement = browser.find_element(By.NAME, "password")
+   passwordelement.send_keys(passw)
+   password2element = browser.find_element(By.NAME, "password2")
+   password2element.send_keys(passw)
+   time.sleep(3)
+   browser.execute_script("arguments[0].click();", browser.find_element(By.XPATH, '//*[@id="frmCheckout"]/p[1]/label/div/ins'))
+   time.sleep(0.5)
+   browser.execute_script("arguments[0].click();", browser.find_element(By.XPATH, '//*[@id="frmCheckout"]/p[2]/input'))
+   try:
+      element = WebDriverWait(driver=browser, timeout=60).until(EC.presence_of_element_located((By.XPATH, '//*[@id="main-body"]/div[1]/section/div/div/h2')))
+   except:
+      print("XPath not found.")
+   finally:
+      msg = request.get("https://api.mail.tm/messages", params={"page": "1"}, headers={"Authorization": f"Bearer {token}"}).json()
+      if msg["hydra:member"][1]["intro"] == "Hello and welcome qing! You are now a step away from getting the best communications to improve your gameplay and get rid of…":
+        msgid = msg["hydra:member"][1]["id"]
+      else:
+        msgid = msg["hydra:member"][0]["id"]
+      fullmsg = request.get(f"https://api.mail.tm/messages/{msgid}", params={"id": f"{msgid}"}, headers={"Authorization": f"Bearer {token}"}).json()
+      link = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', fullmsg["text"])[0]
+      browser.get(f"{link}")
+      try:
+         element = WebDriverWait(driver=browser, timeout=60).until(EC.presence_of_element_located((By.XPATH, '//*[@id="main-body"]/div[1]/section/div/div/h2')))
+      except:
+         print("XPath not found.")
+      finally:
+         browser.quit()
+         print(f"Your email address: {email}\nYour password: {passw}\n")
+         print("Have fun using ExitLag!\n")
+         exit()

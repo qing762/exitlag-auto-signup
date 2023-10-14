@@ -1,4 +1,4 @@
-beautifulsoup4==4.11.2
-cloudscraper==1.2.66
-httpx==0.23.3
-requests==2.31.0
+requests_html==0.10.0
+selenium==4.14.0
+selenium_stealth==1.0.6
+seleniumbase==4.20.2
