@@ -51,4 +51,5 @@ jobs:
         files: release.zip
         name: "Release v ${{ github.run_number }}"
         body: ${{ github.sha }}
+        target_commitish: ${{ github.sha }}
         tag_name: ${{ github.ref }}
