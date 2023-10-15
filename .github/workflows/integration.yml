@@ -38,7 +38,7 @@ jobs:
       run: |
         python workflow.py
 
-    - name: Zip entire repo
+    - name: Zip repo files
       uses: papeloto/action-zip@v1
       with:
         files: .
@@ -47,6 +47,8 @@ jobs:
     - name: Publish code
       id: create_release
       uses: softprops/action-gh-release@v1
+      permissions:
+        contents: write
       with:
         files: release.zip
         name: "Release v ${{ github.run_number }}"
