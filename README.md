@@ -25,6 +25,11 @@ First, clone this repository:
 ```shell
 git clone https://github.com/qing762/exitLag-auto-signup/
 ```
+Install [Google Chrome](https://google.com/chrome/) (IMPORTANT!)
+```shell
+INSTALL HERE: https://google.com/chrome/
+```
+
 Install the necessary dependencies:
 ```shell
 pip install -r requirements.txt
@@ -36,7 +41,10 @@ python main.py
 ```
 
 And you're all set! Follow the instructions while interacting with the Python file.
-    
+
+## Known issues
+[Here are a list of known issues and on how you can fix it](https://github.com/qing762/exitlag-auto-signup/discussions/4)
+
 ## Contributing
 
 Contributions are always welcome!
