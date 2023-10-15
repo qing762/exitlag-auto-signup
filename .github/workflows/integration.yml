@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -47,8 +47,6 @@ jobs:
     - name: Publish code
       id: create_release
       uses: softprops/action-gh-release@v1
-      permissions:
-        contents: write
       with:
         files: release.zip
         name: "Release v ${{ github.run_number }}"
