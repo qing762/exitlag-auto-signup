@@ -1,4 +1,4 @@
-name: Python application
+name: Github Actions
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: flake8 linting
+    - name: Lint with flake8
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=300 --statistics
@@ -38,11 +38,17 @@ jobs:
       run: |
         python workflow.py
 
+    - name: Zip entire repo
+      uses: papeloto/action-zip@v1
+      with:
+        files: .
+        dest: release.zip
+
     - name: Publish code
       id: create_release
       uses: softprops/action-gh-release@v1
       with:
-        files: main.py
-        title: "Release v ${{ github.run_number }}"
+        files: release.zip
+        name: "Release v ${{ github.run_number }}"
         body: ${{ github.sha }}
         tag_name: ${{ github.ref }}
