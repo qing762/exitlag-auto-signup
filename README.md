@@ -7,7 +7,7 @@ A tool that auto fetch a temporary email address and creates an account at https
 
 ## How it works
 
-The process begins by utilizing the [Mail.TM](https://mail.tm/) service to obtain a temporary email address. This email address is then utilized to sign up for an [ExitLag](https://exitlag.com) account. Subsequently, another request is made to [Mail.TM](https://mail.tm/) to retrieve the email confirmation link. Upon activation of the account, the user is able to log in to the ExitLag application and benefit from its functionality.
+The process begins by utilizing the [Mail.GW](https://mail.gw/) service to obtain a temporary email address. This email address is then utilized to sign up for an [ExitLag](https://exitlag.com) account. Subsequently, another request is made to [Mail.GW](https://mail.gw/) to retrieve the email confirmation link. Upon activation of the account, the user is able to log in to the ExitLag application and benefit from its functionality.
 
 
 ## Features
