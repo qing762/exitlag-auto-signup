@@ -39,10 +39,10 @@ else:
     )
 
     request = HTMLSession()
-    domain = request.get("https://api.mail.tm/domains", params={"page": "1"}).json()
+    domain = request.get("https://api.mail.gw/domains", params={"page": "1"}).json()
     for x in domain["hydra:member"]:
         register = request.post(
-            "https://api.mail.tm/accounts",
+            "https://api.mail.gw/accounts",
             json={
                 "address": f'{get_random_string(15)}@{x["domain"]}',
                 "password": passw,
@@ -50,7 +50,7 @@ else:
         ).json()
         email = register["address"]
     token = request.post(
-        "https://api.mail.tm/token", json={"address": email, "password": passw}
+        "https://api.mail.gw/token", json={"address": email, "password": passw}
     ).json()["token"]
 
     with DriverContext(uc=True, headless=False, dark_mode=True) as browser:
@@ -96,7 +96,7 @@ else:
             print("XPath not found.")
         finally:
             msg = request.get(
-                "https://api.mail.tm/messages",
+                "https://api.mail.gw/messages",
                 params={"page": "1"},
                 headers={"Authorization": f"Bearer {token}"},
             ).json()
@@ -108,7 +108,7 @@ else:
             else:
                 msgid = msg["hydra:member"][1]["id"]
             fullmsg = request.get(
-                f"https://api.mail.tm/messages/{msgid}",
+                f"https://api.mail.gw/messages/{msgid}",
                 params={"id": f"{msgid}"},
                 headers={"Authorization": f"Bearer {token}"},
             ).json()

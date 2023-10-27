@@ -37,3 +37,18 @@ jobs:
       working-directory: .github/workflows
       run: |
         python workflow.py
+
+    - name: Zip repo files
+      uses: papeloto/action-zip@v1
+      with:
+        files: .
+        dest: release.zip
+
+    - name: Publish code
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: release.zip
+        name: "Release v${{ github.run_number }}"
+        body: "Commit: ${{ github.sha }}\nDownload the `release.zip` file and you are good to go!\nContinue by following the steps given in the README."
+        tag_name: ${{ github.ref_name }}
