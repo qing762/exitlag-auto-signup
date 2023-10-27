@@ -70,10 +70,11 @@ Unfortunately, I have no plans of updating this project for now. But you can [cr
 Sadly, no.
 
 
-## Feedback
+## Feedback / Issues / Request for takedown
 
-If you have any feedback, please reach out to me at [Discord](https://discord.com/users/635765555277725696)
-## Authors
+If you have any feedback or issues running the code, please reach out to me at [Discord/chaeyo_0](https://discord.com/users/635765555277725696)
 
-- [@qing762](https://www.github.com/qing762)
+### FOR EXITLAG EMPLOYEES 
+
+If the company wishes to discontinue or terminate this project, please do not hesitate to reach out to me on Discord. I can be reached at [Discord/chaeyo_0](https://discord.com/users/635765555277725696). Thank you for your attention to this matter.
 
