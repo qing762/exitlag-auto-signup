@@ -1,7 +1,6 @@
 import string
 import random
 import time
-import json
 import re
 from selenium.webdriver.support.ui import WebDriverWait
 from requests_html import HTMLSession

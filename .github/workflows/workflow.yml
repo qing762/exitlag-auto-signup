@@ -33,22 +33,20 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=300 --statistics
 
-    - name: Ensuring code is working as expected
-      working-directory: .github/workflows
+    - name: Build exe
       run: |
-        python workflow.py
-
-    - name: Zip repo files
-      uses: papeloto/action-zip@v1
-      with:
-        files: .
-        dest: release.zip
+        pyinstaller -F main.py
 
     - name: Publish code
       id: create_release
       uses: softprops/action-gh-release@v1
       with:
-        files: release.zip
+        files: ./dist/main.exe
         name: "Release v${{ github.run_number }}"
-        body: "Commit: ${{ github.sha }}\nDownload the `release.zip` file and you are good to go!\nContinue by following the steps given in the README."
+        body: "Commit: ${{ github.sha }}\nDownload the `main.exe` file and you are good to go!\nContinue by following the steps given in the README."
         tag_name: ${{ github.ref_name }}
+
+    - name: Ensuring code is working as expected
+      working-directory: .github/workflows
+      run: |
+        python workflow.py
