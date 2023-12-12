@@ -3,4 +3,3 @@ selenium==4.14.0
 selenium_stealth==1.0.6
 seleniumbase==4.20.2
 pybrowsers @ git+https://github.com/roniemartinez/browsers
-pyinstallers==6.1.0
