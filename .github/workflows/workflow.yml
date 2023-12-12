@@ -33,9 +33,10 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=300 --statistics
 
-    - name: Build exe
+    - name: Ensuring code is working as expected
+      working-directory: .github/workflows
       run: |
-        pyinstaller -F main.py
+        python workflow.py
 
     - name: Publish code
       id: create_release
@@ -45,8 +46,3 @@ jobs:
         name: "Release v${{ github.run_number }}"
         body: "Commit: ${{ github.sha }}\nDownload the `main.exe` file and you are good to go!\nContinue by following the steps given in the README."
         tag_name: ${{ github.ref_name }}
-
-    - name: Ensuring code is working as expected
-      working-directory: .github/workflows
-      run: |
-        python workflow.py
