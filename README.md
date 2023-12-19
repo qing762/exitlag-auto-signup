@@ -21,6 +21,8 @@ The process begins by utilizing the [Mail.GW](https://mail.gw/) service to obtai
 > It is important to note that excessive usage of this tool may result in rate limiting by the API or, in severe cases, IP blocking. To avoid these potential consequences, it is recommended to limit the number of usage. (Maybe 5 times every 10 minutes?)
 ## Installation / Usage
 
+### [>>> VIDEO GUIDE <<<](https://qing762.is-a.dev/exitlag-guide)
+
 First, clone this repository:
 ```shell
 git clone https://github.com/qing762/exitLag-auto-signup/
