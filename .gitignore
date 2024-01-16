@@ -3,3 +3,4 @@
 downloaded_files/
 __pycache__/
 *.temp
+.git/
