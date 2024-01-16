@@ -1,4 +1,7 @@
-> **Warning**
+> [!NOTE]  
+> Join the [Discord Server](https://discord.gg/3DnxhHy3vg) for issues. Thanks a lot!
+
+> [!WARNING]
 > Please be advised that usage of this tool is entirely at your own risk. I assumes no responsibility for any adverse consequences that may arise from its use, and users are encouraged to exercise caution and exercise their own judgment in utilizing this tool.
 
 # ExitLag auto signup
@@ -74,7 +77,7 @@ Sadly, no.
 
 ## Feedback / Issues / Request for takedown
 
-If you have any feedback or issues running the code, please reach out to me at [Discord/qing762](https://discord.com/users/635765555277725696)
+If you have any feedback or issues running the code, please join the [Discord Server](https://discord.gg/3DnxhHy3vg)
 
 ### FOR EXITLAG EMPLOYEES 
 
