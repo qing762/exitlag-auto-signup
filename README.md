@@ -40,7 +40,7 @@ Install the necessary dependencies:
 pip install -r requirements.txt
 ```
 
-Next, run the Python file:
+Finally, run the Python file:
 ```shell
 python main.py
 ```
@@ -54,7 +54,7 @@ And you're all set! Follow the instructions while interacting with the Python fi
 
 Contributions are always welcome!
 
-To contribute, fork this repository and improve it. After that, press the contribute button.
+To contribute, fork this repository and improve it. After that, make a pull request.
 ## FAQ
 #### Why did you create this?
 
@@ -64,15 +64,6 @@ Due to persistent high ping of over 100 while participating in online gaming ses
 
 I'm not sure but mostly it is as it bypasses Cloudflare's bot check as well as Google's Recaptcha.
 
-
-#### Do you plan to update it if it's patched?
-
-Unfortunately, I have no plans of updating this project for now. But you can [create an issue](https://github.com/qing762/exitLag-auto-signup/issues/new/) if there is a problem within my code.
-
-
-#### Any plans on improving the project?
-
-Sadly, no.
 
 
 ## Feedback / Issues / Request for takedown
