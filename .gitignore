@@ -4,3 +4,5 @@ downloaded_files/
 __pycache__/
 *.temp
 .git/
+test.py
+test.json
