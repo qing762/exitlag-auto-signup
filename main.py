@@ -3,6 +3,7 @@ import random
 import time
 import re
 import browsers
+import sys
 from selenium.webdriver.support.ui import WebDriverWait
 from requests_html import HTMLSession
 from selenium.webdriver.common.by import By
@@ -34,15 +35,25 @@ else:
     else:
         passw = passw
 
+    maildomain = input("\nChoose your email provider. This can be either mail.gw or mail.tm\nFor mail.gw, type 1 and press enter to continue while for mail.tm, type 2 and press enter to continue.\nIf nothing is entered, the script will stick to the default provider (mail.tm)\nOption: ")
+    if maildomain == "1":
+        maildomain = "mail.gw"
+    elif maildomain == "2":
+        maildomain = "mail.tm"
+    elif maildomain == "":
+        maildomain = "mail.tm"
+    else:
+        sys.exit("Unknown text given. Exiting...")
+
     print(
         "\nDue to the inner workings of the module, it is needed to browse programmatically.\nNEVER use the gui to navigate (Using your keybord and mouse) as it will causes POSSIBLE DETECTION!\nThe script will do the entire job itself.\n"
     )
 
     request = HTMLSession()
-    domain = request.get("https://api.mail.gw/domains", params={"page": "1"}).json()
+    domain = request.get(f"https://api.{maildomain}/domains", params={"page": "1"}).json()
     for x in domain["hydra:member"]:
         register = request.post(
-            "https://api.mail.gw/accounts",
+            f"https://api.{maildomain}/accounts",
             json={
                 "address": f'{get_random_string(15)}@{x["domain"]}',
                 "password": passw,
@@ -50,7 +61,7 @@ else:
         ).json()
         email = register["address"]
     token = request.post(
-        "https://api.mail.gw/token", json={"address": email, "password": passw}
+        f"https://api.{maildomain}/token", json={"address": email, "password": passw}
     ).json()["token"]
 
     with DriverContext(uc=True, headless=False, dark_mode=True) as browser:
@@ -96,7 +107,7 @@ else:
             print("XPath not found.")
         finally:
             msg = request.get(
-                "https://api.mail.gw/messages",
+                f"https://api.{maildomain}/messages",
                 params={"page": "1"},
                 headers={"Authorization": f"Bearer {token}"},
             ).json()
@@ -108,7 +119,7 @@ else:
             else:
                 msgid = msg["hydra:member"][1]["id"]
             fullmsg = request.get(
-                f"https://api.mail.gw/messages/{msgid}",
+                f"https://api.{maildomain}/messages/{msgid}",
                 params={"id": f"{msgid}"},
                 headers={"Authorization": f"Bearer {token}"},
             ).json()
