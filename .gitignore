@@ -6,3 +6,7 @@ __pycache__/
 .git/
 test.py
 test.json
+hwid.txt
+temp.txt
+test2.py
+t.txt
