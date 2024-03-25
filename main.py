@@ -35,7 +35,9 @@ else:
     else:
         passw = passw
 
-    maildomain = input("\nChoose your email provider. This can be either mail.gw or mail.tm\nFor mail.gw, type 1 and press enter to continue while for mail.tm, type 2 and press enter to continue.\nIf nothing is entered, the script will stick to the default provider (mail.tm)\nOption: ")
+    maildomain = input(
+        "\nChoose your email provider. This can be either mail.gw or mail.tm\nFor mail.gw, type 1 and press enter to continue while for mail.tm, type 2 and press enter to continue.\nIf nothing is entered, the script will stick to the default provider (mail.tm)\nOption: "
+    )
     if maildomain == "1":
         maildomain = "mail.gw"
     elif maildomain == "2":
@@ -50,7 +52,9 @@ else:
     )
 
     request = HTMLSession()
-    domain = request.get(f"https://api.{maildomain}/domains", params={"page": "1"}).json()
+    domain = request.get(
+        f"https://api.{maildomain}/domains", params={"page": "1"}
+    ).json()
     for x in domain["hydra:member"]:
         register = request.post(
             f"https://api.{maildomain}/accounts",
@@ -92,7 +96,7 @@ else:
             "arguments[0].click();",
             browser.find_element(By.XPATH, '//*[@id="frmCheckout"]/p[1]/label/div/ins'),
         )
-        time.sleep(0.5)
+        time.sleep(2)
         browser.execute_script(
             "arguments[0].click();",
             browser.find_element(By.XPATH, '//*[@id="frmCheckout"]/p[2]/input'),
