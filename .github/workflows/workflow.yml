@@ -14,10 +14,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up Python 3.10
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
@@ -38,14 +39,14 @@ jobs:
           python workflow.py
 
       - name: Zip repo files
-        uses: papeloto/action-zip@v1
+        uses: papeloto/action-zip@v1.2
         with:
           files: . '!./.git/**/*'
           dest: release.zip
 
       - name: Publish code
         id: create_release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2.0.4
         with:
           files: release.zip
           name: "Release v2.${{ github.run_number }}"
