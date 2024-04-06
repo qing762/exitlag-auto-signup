@@ -1,4 +1,4 @@
-name: Github Actions
+name: Build, Lint & Publish
 
 on:
   push:

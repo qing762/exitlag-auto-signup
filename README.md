@@ -66,13 +66,13 @@ I'm not sure but mostly it is as it bypasses Cloudflare's bot check as well as G
 
 
 
-## Feedback / Issues / Request for takedown
+## Feedback / Issues
 
 If you have any feedback or issues running the code, please join the [Discord server](https://qing762.is-a.dev/discord)
 
-### FOR EXITLAG EMPLOYEES 
+### FOR EXITLAG EMPLOYEES IF YOU WISH TO REQUEST FOR TAKING DOWN THIS PROJECT
 
-If the company wishes to discontinue or terminate this project, please do not hesitate to reach out to me on Discord. I can be reached at [Discord/qing762](https://discord.com/users/635765555277725696). Thank you for your attention to this matter.
+If the company wishes to discontinue or terminate this project, please do not hesitate to reach out to me. I can be reached at [Discord/qing762](https://discord.com/users/635765555277725696). Thank you for your attention to this matter.
 
 
 ## License
