@@ -4,21 +4,23 @@ import time
 import re
 import browsers
 import sys
-from selenium.webdriver.support.ui import WebDriverWait
+from DrissionPage import ChromiumPage
 from requests_html import HTMLSession
-from selenium.webdriver.common.by import By
-from selenium_stealth import stealth
-from seleniumbase import DriverContext
-from selenium.webdriver.support import expected_conditions as EC
 
 
 def get_random_string(length):
     letters = string.ascii_lowercase
     return "".join(random.choice(letters) for i in range(length))
 
-
+def wait_until_url(page, target_url, timeout=30):
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        if page.url == target_url:
+            return True
+        time.sleep(0.5)
+    return False
+            
 print("\nEnsuring Chrome availability...")
-
 
 if browsers.get("chrome") is None:
     print(
@@ -43,7 +45,7 @@ else:
     elif maildomain == "2":
         maildomain = "mail.tm"
     elif maildomain == "":
-        maildomain = "mail.tm"
+        maildomain = "mail.gw"
     else:
         sys.exit("Unknown text given. Exiting...")
 
@@ -68,80 +70,43 @@ else:
         f"https://api.{maildomain}/token", json={"address": email, "password": passw}
     ).json()["token"]
 
-    with DriverContext(uc=True, headless=False, dark_mode=True) as browser:
-        stealth(
-            browser,
-            languages=["en-US", "en"],
-            vendor="Google Inc.",
-            platform="Win32",
-            webgl_vendor="Intel Inc.",
-            renderer="Intel Iris OpenGL Engine",
-            fix_hairline=True,
-        )
-
-        browser.get("http://exitlag.com/register")
-        time.sleep(3)
-        firstnameelement = browser.find_element(By.NAME, "firstname")
-        firstnameelement.send_keys("qing")
-        lastnameelement = browser.find_element(By.NAME, "lastname")
-        lastnameelement.send_keys("chycr")
-        emailelement = browser.find_element(By.NAME, "email")
-        emailelement.send_keys(email)
-        passwordelement = browser.find_element(By.NAME, "password")
-        passwordelement.send_keys(passw)
-        password2element = browser.find_element(By.NAME, "password2")
-        password2element.send_keys(passw)
-        time.sleep(3)
-        browser.execute_script(
-            "arguments[0].click();",
-            browser.find_element(By.XPATH, '//*[@id="frmCheckout"]/p[1]/label/div/ins'),
-        )
+    page = ChromiumPage()
+    page.get("https://www.exitlag.com/register")
+    page.ele('#inputFirstName').input("qing")
+    page.ele('#inputLastName').input("chy")
+    page.ele('#inputEmail').input(email)
+    page.ele('#inputNewPassword1').input(passw)
+    page.ele('#inputNewPassword2').input(passw)
+    element = page.ele('.icheck-button')
+    element.click()
+    element = page.ele('.btn btn-primary btn-line fw-500 font-18 py-2 w-100  btn-recaptcha btn-recaptcha-invisible')
+    element.click()
+    if wait_until_url(page, "https://www.exitlag.com/register-success", timeout=60):
         time.sleep(2)
-        browser.execute_script(
-            "arguments[0].click();",
-            browser.find_element(By.XPATH, '//*[@id="frmCheckout"]/p[2]/input'),
-        )
-        try:
-            element = WebDriverWait(driver=browser, timeout=60).until(
-                EC.presence_of_element_located(
-                    (By.XPATH, '//*[@id="main-body"]/div[1]/section/div/div/h2')
-                )
-            )
-        except Exception:
-            print("XPath not found.")
-        finally:
-            msg = request.get(
-                f"https://api.{maildomain}/messages",
-                params={"page": "1"},
-                headers={"Authorization": f"Bearer {token}"},
-            ).json()
-            if (
-                msg["hydra:member"][0]["intro"]
-                == "Hello and welcome qing! You are now a step away from getting the best communications to improve your gameplay and get rid of…"
-            ):
-                msgid = msg["hydra:member"][0]["id"]
-            else:
-                msgid = msg["hydra:member"][1]["id"]
-            fullmsg = request.get(
-                f"https://api.{maildomain}/messages/{msgid}",
-                params={"id": f"{msgid}"},
-                headers={"Authorization": f"Bearer {token}"},
-            ).json()
-            link = re.findall(
-                r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
-                fullmsg["text"],
-            )[0]
-            browser.get(f"{link}")
-            try:
-                element = WebDriverWait(driver=browser, timeout=60).until(
-                    EC.presence_of_element_located(
-                        (By.XPATH, '//*[@id="main-body"]/div[1]/section/div/div/h2')
-                    )
-                )
-            except Exception:
-                print("XPath not found.")
-            finally:
-                browser.quit()
-                print(f"Your email address: {email}\nYour password: {passw}\n")
-                print("Have fun using ExitLag!")
-                exit()
+        msg = request.get(
+            f"https://api.{maildomain}/messages",
+            params={"page": "1"},
+            headers={"Authorization": f"Bearer {token}"},
+        ).json()
+        if (
+            msg["hydra:member"][0]["intro"]
+            == "Hello and welcome qing! You are now a step away from getting the best communications to improve your gameplay and get rid of…"
+        ):
+            msgid = msg["hydra:member"][0]["id"]
+        else:
+            msgid = msg["hydra:member"][1]["id"]
+        fullmsg = request.get(
+            f"https://api.{maildomain}/messages/{msgid}",
+            params={"id": f"{msgid}"},
+            headers={"Authorization": f"Bearer {token}"},
+        ).json()
+        link = re.findall(
+            r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
+            fullmsg["text"],
+        )[0]
+        page.get(f"{link}")
+        time.sleep(5)
+        page.quit()
+        print(f"Your email address: {email}\nYour password: {passw}\n")
+        print("Have fun using ExitLag!")
+        exit()

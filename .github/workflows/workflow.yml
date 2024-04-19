@@ -49,6 +49,6 @@ jobs:
         uses: softprops/action-gh-release@v2.0.4
         with:
           files: release.zip
-          name: "Release v2.${{ github.run_number }}"
+          name: "Release v3.${{ github.run_number }}"
           body: "Commit: ${{ github.sha }}\nDownload the `release.zip` file and you are good to go!\nContinue by following the steps given in the README."
           tag_name: ${{ github.ref_name }}
