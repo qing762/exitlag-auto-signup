@@ -5,13 +5,7 @@ import re
 import browsers
 import sys
 from DrissionPage import ChromiumPage
-from DrissionPage.common import wait_until
-from selenium.webdriver.support.ui import WebDriverWait
 from requests_html import HTMLSession
-from selenium.webdriver.common.by import By
-from selenium_stealth import stealth
-from seleniumbase import DriverContext
-from selenium.webdriver.support import expected_conditions as EC
 
 
 def get_random_string(length):
