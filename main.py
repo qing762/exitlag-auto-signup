@@ -72,6 +72,7 @@ else:
 
     page = ChromiumPage()
     page.get("https://www.exitlag.com/register")
+    time.sleep(5)
     page.ele('#inputFirstName').input("qing")
     page.ele('#inputLastName').input("chy")
     page.ele('#inputEmail').input(email)
