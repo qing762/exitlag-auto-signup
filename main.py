@@ -7,7 +7,6 @@ import sys
 from DrissionPage import ChromiumPage
 from requests_html import HTMLSession
 
-
 def get_random_string(length):
     letters = string.ascii_lowercase
     return "".join(random.choice(letters) for i in range(length))
@@ -19,7 +18,7 @@ def wait_until_url(page, target_url, timeout=30):
             return True
         time.sleep(0.5)
     return False
-            
+
 print("\nEnsuring Chrome availability...")
 
 if browsers.get("chrome") is None:
@@ -42,10 +41,13 @@ else:
     )
     if maildomain == "1":
         maildomain = "mail.gw"
+        externaldomain = "mail.tm"
     elif maildomain == "2":
         maildomain = "mail.tm"
+        externaldomain = "mail.gw"
     elif maildomain == "":
         maildomain = "mail.gw"
+        externaldomain = "mail.tm"
     else:
         sys.exit("Unknown text given. Exiting...")
 
@@ -54,60 +56,85 @@ else:
     )
 
     request = HTMLSession()
-    domain = request.get(
+    try:
+        domain = request.get(
         f"https://api.{maildomain}/domains", params={"page": "1"}
-    ).json()
-    for x in domain["hydra:member"]:
-        register = request.post(
-            f"https://api.{maildomain}/accounts",
-            json={
-                "address": f'{get_random_string(15)}@{x["domain"]}',
-                "password": passw,
-            },
         ).json()
-        email = register["address"]
-    token = request.post(
-        f"https://api.{maildomain}/token", json={"address": email, "password": passw}
-    ).json()["token"]
+        for x in domain["hydra:member"]:
+            register = request.post(
+                f"https://api.{maildomain}/accounts",
+                json={
+                    "address": f'{get_random_string(15)}@{x["domain"]}',
+                    "password": passw,
+                },
+            ).json()
+            email = register["address"]
+            token = request.post(
+                f"https://api.{maildomain}/token", json={"address": email, "password": passw}
+            ).json()["token"]
+    except KeyError:
+        print(f"Mail domain {maildomain} is not currently not available. Switching to the domain {externaldomain}...")
+        maildomain = externaldomain
+        domain = request.get(
+        f"https://api.{maildomain}/domains", params={"page": "1"}
+        ).json()
+        for x in domain["hydra:member"]:
+            register = request.post(
+                f"https://api.{maildomain}/accounts",
+                json={
+                    "address": f'{get_random_string(15)}@{x[0]["domain"]}',
+                    "password": passw,
+                },
+            ).json()
+            email = register["address"]
+            token = request.post(
+                f"https://api.{maildomain}/token", json={"address": email, "password": passw}
+            ).json()["token"]
 
     page = ChromiumPage()
     page.get("https://www.exitlag.com/register")
-    time.sleep(5)
-    page.ele('#inputFirstName').input("qing")
-    page.ele('#inputLastName').input("chy")
-    page.ele('#inputEmail').input(email)
-    page.ele('#inputNewPassword1').input(passw)
-    page.ele('#inputNewPassword2').input(passw)
-    element = page.ele('.icheck-button')
-    element.click()
-    element = page.ele('.btn btn-primary btn-line fw-500 font-18 py-2 w-100  btn-recaptcha btn-recaptcha-invisible')
-    element.click()
-    if wait_until_url(page, "https://www.exitlag.com/register-success", timeout=60):
-        time.sleep(2)
-        msg = request.get(
-            f"https://api.{maildomain}/messages",
-            params={"page": "1"},
-            headers={"Authorization": f"Bearer {token}"},
-        ).json()
-        if (
-            msg["hydra:member"][0]["intro"]
-            == "Hello and welcome qing! You are now a step away from getting the best communications to improve your gameplay and get rid of…"
-        ):
-            msgid = msg["hydra:member"][0]["id"]
+    if page.ele('#inputFirstName', timeout=60):
+        page.ele('#inputFirstName').input("qing")
+        page.ele('#inputLastName').input("chy")
+        page.ele('#inputEmail').input(email)
+        page.ele('#inputNewPassword1').input(passw)
+        page.ele('#inputNewPassword2').input(passw)
+        element = page.ele('.icheck-button')
+        element.click()
+        element = page.ele('.btn btn-primary btn-line fw-500 font-18 py-2 w-100  btn-recaptcha btn-recaptcha-invisible')
+        element.click()
+        if wait_until_url(page, "https://www.exitlag.com/register-success", timeout=60):
+            if page.ele('.h2 text-uppercase fw-600 organetto text-center text-white mb-0', timeout=60):
+                msg = request.get(
+                    f"https://api.{maildomain}/messages",
+                    params={"page": "1"},
+                    headers={"Authorization": f"Bearer {token}"},
+                ).json()
+                if (
+                    msg["hydra:member"][0]["intro"]
+                    == "Hello and welcome qing! You are now a step away from getting the best communications to improve your gameplay and get rid of…"
+                ):
+                    msgid = msg["hydra:member"][0]["id"]
+                else:
+                    msgid = msg["hydra:member"][1]["id"]
+                fullmsg = request.get(
+                    f"https://api.{maildomain}/messages/{msgid}",
+                    params={"id": f"{msgid}"},
+                    headers={"Authorization": f"Bearer {token}"},
+                ).json()
+                link = re.findall(
+                    r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
+                    fullmsg["text"],
+                )[0]
+                page.get(f"{link}")
+                time.sleep(5)
+                page.quit()
+                print(f"Your email address: {email}\nYour password: {passw}\n")
+                print("Have fun using ExitLag!")
+                exit()
+            else:
+                print("Failed to find the element. Exiting...")
+                exit()
         else:
-            msgid = msg["hydra:member"][1]["id"]
-        fullmsg = request.get(
-            f"https://api.{maildomain}/messages/{msgid}",
-            params={"id": f"{msgid}"},
-            headers={"Authorization": f"Bearer {token}"},
-        ).json()
-        link = re.findall(
-            r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
-            fullmsg["text"],
-        )[0]
-        page.get(f"{link}")
-        time.sleep(5)
-        page.quit()
-        print(f"Your email address: {email}\nYour password: {passw}\n")
-        print("Have fun using ExitLag!")
-        exit()
+            print("Failed to register. Exiting...")
+            exit()
