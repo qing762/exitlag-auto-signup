@@ -10,10 +10,10 @@ class Main():
         letters = string.ascii_lowercase
         return "".join(random.choice(letters) for i in range(length))
 
-    def waitUntilUrl(self, page, target_url, timeout=30):
-        start_time = time.time()
-        while time.time() - start_time < timeout:
-            if page.url == target_url:
+    def waitUntilUrl(self, page, targetUrl, timeout=30):
+        startTime = time.time()
+        while time.time() - startTime < timeout:
+            if page.url == targetUrl:
                 return True
             time.sleep(0.5)
         return False

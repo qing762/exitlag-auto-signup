@@ -129,12 +129,10 @@ else:
             page.ele("#inputEmail").input(email)
             page.ele("#inputNewPassword1").input(passw)
             page.ele("#inputNewPassword2").input(passw)
-            element = page.ele(".icheck-button")
-            element.click()
-            element = page.ele(
+            page.ele(".icheck-button").click()
+            page.ele(
                 ".btn btn-primary btn-line fw-500 font-18 py-2 w-100  btn-recaptcha btn-recaptcha-invisible"
-            )
-            element.click()
+            ).click()
             if lib.waitUntilUrl(
                 page, "https://www.exitlag.com/register-success", timeout=60
             ):
