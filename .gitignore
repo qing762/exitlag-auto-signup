@@ -1,12 +1,4 @@
-.pytest_cache/
-.vscode/
-downloaded_files/
 __pycache__/
-*.temp
 .git/
-test.py
-test.json
-hwid.txt
-temp.txt
-test2.py
-t.txt
+accounts.txt
+settings.toml
