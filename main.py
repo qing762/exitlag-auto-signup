@@ -141,6 +141,7 @@ else:
                     timeout=60,
                 ):
                     if maildomain == "mail.gw" or maildomain == "mail.tm":
+                        found = False
                         msg = request.get(
                             f"https://api.{maildomain}/messages",
                             params={"page": "1"},
@@ -164,9 +165,11 @@ else:
                         )[0]
                         page.get(f"{link}")
                         time.sleep(5)
+                        page.set.cookies.clear()
+                        page.clear_cache()
                         page.quit()
-                        print(f"Your email address: {email}\nYour password: {passw}\n")
-                        print("Have fun using ExitLag!")
+                        accounts.append({"email": email, "password": passw})
+                        found = True
                         continue
                     elif maildomain == "ghostlymail.com":
                         msg = request.get(
@@ -184,15 +187,12 @@ else:
                                 )[0]
                                 page.get(f"{link}")
                                 time.sleep(5)
+                                page.set.cookies.clear()
+                                page.clear_cache()
                                 page.quit()
                                 accounts.append({"email": email, "password": passw})
                                 found = True
                                 continue
-                        if not found:
-                            print(
-                                "Failed to find the verify email. Skipping and continuing...\n"
-                            )
-                            continue
                     else:
                         print(
                             "Failed to selected mail domain.\nThis shouldn't appear in common cases.\nPlease report this in the Discord server (https://qing762.is-a.dev/discord/)\nExiting..."
@@ -203,6 +203,11 @@ else:
                     continue
             else:
                 print("Failed to register. Exiting...")
+                continue
+            if not found:
+                print(
+                    "Failed to find the verify email. Skipping and continuing...\n"
+                )
                 continue
 
     with open("accounts.txt", "a") as f:
