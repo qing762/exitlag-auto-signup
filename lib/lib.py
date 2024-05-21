@@ -23,7 +23,7 @@ class Main():
 
     async def getDomain(self, request, maildomain):
         async with request.get(f"https://api.{maildomain}/domains", params={"page": "1"}) as resp:
-                return await resp.json()
+            return await resp.json()
 
     async def registerAccount(self, session, maildomain, domain, passw):
         async with session.post(
