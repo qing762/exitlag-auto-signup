@@ -2,6 +2,7 @@ import string
 import random
 import time
 import toml
+import asyncio
 import platform
 
 
@@ -10,29 +11,32 @@ class Main():
         letters = string.ascii_lowercase
         return "".join(random.choice(letters) for i in range(length))
 
-    def waitUntilUrl(self, page, targetUrl, timeout=30):
+    async def waitUntilUrl(self, page, targetUrl, timeout=30):
         startTime = time.time()
         while time.time() - startTime < timeout:
             if page.url == targetUrl:
                 return True
-            time.sleep(0.5)
+            await asyncio.sleep(0.5)
         return False
 
-    def getDomain(self, request, maildomain):
-        return request.get(f"https://api.{maildomain}/domains", params={"page": "1"}).json()
+    async def getDomain(self, request, maildomain):
+        async with request.get(f"https://api.{maildomain}/domains", params={"page": "1"}) as resp:
+                return await resp.json()
 
-    def registerAccount(self, request, maildomain, domain, passw):
-        register = request.post(
+    async def registerAccount(self, session, maildomain, domain, passw):
+        async with session.post(
             f"https://api.{maildomain}/accounts",
             json={
                 "address": f'{self.getRandomString(15)}@{domain["domain"]}',
                 "password": passw,
             },
-        ).json()
+        ) as resp:
+            register = await resp.json()
         email = register["address"]
-        token = request.post(
+        async with session.post(
             f"https://api.{maildomain}/token", json={"address": email, "password": passw}
-        ).json()["token"]
+        ) as resp:
+            token = await resp.json()["token"]
         return email, token
 
     def switchDomain(maildomain, externaldomain):
