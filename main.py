@@ -19,7 +19,7 @@ async def main():
             "\nChrome is required for this tool. Please install it via:\nhttps://google.com/chrome"
         )
     else:
-        passw = await lib.ainput(
+        passw = input(
             "\nInput your password for your account.\nIt is recommended for you to stay with the default password, ignore this and press enter\nIf you prefer to input your own password, you might need to manually verify the password strength at https://www.exitlag.com/register yourself.\nPassword: "
         )
 
@@ -31,7 +31,7 @@ async def main():
         accounts = []
 
         while True:
-            maildomain = await lib.ainput(
+            maildomain = input(
                 "\nChoose your email provider. This can be mail.gw, mail.tm or ghostlymail.com"
                 "\nFor mail.gw, type 1 and press enter to continue"
                 "\nFor mail.tm, type 2 and press enter to continue."
@@ -63,7 +63,7 @@ async def main():
                 print("Invalid number given. Please enter a valid number.")
 
         while True:
-            executionCount = await lib.ainput(
+            executionCount = input(
                 "\nHow many accounts do you want to create?\nIf nothing is entered, the script will stick to the default value (1)\nAmount: "
             )
             if executionCount == "":
