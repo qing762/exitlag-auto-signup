@@ -1,19 +1,21 @@
 import string
 import random
-import time
 import toml
 import asyncio
 import platform
 
 
 class Main():
-    def getRandomString(self, length):
+    async def ainput(prompt: str = "") -> str:
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(None, input, prompt)
+
+    async def getRandomString(self, length):
         letters = string.ascii_lowercase
         return "".join(random.choice(letters) for i in range(length))
 
     async def waitUntilUrl(self, page, targetUrl, timeout=30):
-        startTime = time.time()
-        while time.time() - startTime < timeout:
+        for _ in range(timeout * 2):
             if page.url == targetUrl:
                 return True
             await asyncio.sleep(0.5)
@@ -39,11 +41,11 @@ class Main():
             token = await resp.json()["token"]
         return email, token
 
-    def switchDomain(maildomain, externaldomain):
+    async def switchDomain(maildomain, externaldomain):
         print(f"Mail domain {maildomain} is not currently not available. Switching to the domain {externaldomain}...")
         return externaldomain
 
-    def getSettingsAndBlockIP(self):
+    async def getSettingsAndBlockIP(self):
         try:
             data = toml.load("settings.toml")
         except FileNotFoundError:
