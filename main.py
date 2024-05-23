@@ -2,6 +2,7 @@ import asyncio
 import re
 import browsers
 import aiohttp
+import DrissionPage
 from DrissionPage import ChromiumPage
 from lib.lib import Main
 from datetime import datetime
@@ -127,9 +128,13 @@ async def main():
 
                 page = ChromiumPage()
                 page.get("https://www.exitlag.com/register")
-                iframe = page('@src^https://challenges.cloudflare.com/cdn-cgi')
-                if iframe:
-                    iframe.ele("tag:input").click()
+                try:
+                    page.wait.ele_displayed(page('@src^https://challenges.cloudflare.com/cdn-cgi'))
+                    iframe = page('@src^https://challenges.cloudflare.com/cdn-cgi')
+                    if iframe:
+                        iframe.ele("tag:input").click()
+                except DrissionPage.errors.ElementNotFoundError:
+                    pass
                 if page.ele("#inputFirstName", timeout=60):
                     page.ele("#inputFirstName").input("qing")
                     page.ele("#inputLastName").input("chy")
@@ -141,9 +146,7 @@ async def main():
                     page.ele(
                         ".btn btn-primary btn-line fw-500 font-18 py-2 w-100  btn-recaptcha btn-recaptcha-invisible"
                     ).click()
-                    if await lib.waitUntilUrl(
-                        page, "https://www.exitlag.com/register-success", timeout=60
-                    ):
+                    if page.wait.url_change("https://www.exitlag.com/register-success"):
                         if page.ele(
                             ".h2 text-uppercase fw-600 organetto text-center text-white mb-0",
                             timeout=60,

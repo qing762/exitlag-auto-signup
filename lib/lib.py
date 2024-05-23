@@ -14,13 +14,6 @@ class Main():
         letters = string.ascii_lowercase
         return "".join(random.choice(letters) for i in range(length))
 
-    async def waitUntilUrl(self, page, targetUrl, timeout=30):
-        for _ in range(timeout * 2):
-            if page.url == targetUrl:
-                return True
-            await asyncio.sleep(0.5)
-        return False
-
     async def getDomain(self, request, maildomain):
         async with request.get(f"https://api.{maildomain}/domains", params={"page": "1"}) as resp:
             return await resp.json()
@@ -38,7 +31,8 @@ class Main():
         async with session.post(
             f"https://api.{maildomain}/token", json={"address": email, "password": passw}
         ) as resp:
-            token = await resp.json()["token"]
+            respJson = await resp.json()
+            token = respJson["token"]
         return email, token
 
     async def switchDomain(maildomain, externaldomain):
