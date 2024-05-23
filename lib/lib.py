@@ -29,7 +29,7 @@ class Main():
         async with session.post(
             f"https://api.{maildomain}/accounts",
             json={
-                "address": f'{self.getRandomString(15)}@{domain["domain"]}',
+                "address": f'{await self.getRandomString(15)}@{domain["domain"]}',
                 "password": passw,
             },
         ) as resp:
