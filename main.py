@@ -3,13 +3,14 @@ import re
 import browsers
 import aiohttp
 import DrissionPage
-from DrissionPage import ChromiumPage
+from DrissionPage import ChromiumPage, ChromiumOptions
 from lib.lib import Main
 from datetime import datetime
 
 
 async def main():
     lib = Main()
+    port = ChromiumOptions().auto_port()
 
     await lib.getSettingsAndBlockIP()
 
@@ -126,7 +127,7 @@ async def main():
                         )
                         continue
 
-                page = ChromiumPage()
+                page = ChromiumPage(port)
                 page.get("https://www.exitlag.com/register")
                 try:
                     page.wait.ele_displayed(page('@src^https://challenges.cloudflare.com/cdn-cgi'))
@@ -146,9 +147,9 @@ async def main():
                     page.ele(
                         ".btn btn-primary btn-line fw-500 font-18 py-2 w-100  btn-recaptcha btn-recaptcha-invisible"
                     ).click()
-                    if page.wait.url_change("https://www.exitlag.com/register-success"):
+                    if page.wait.url_change("https://www.exitlag.com/clientarea.php", timeout=60):
                         if page.ele(
-                            ".h2 text-uppercase fw-600 organetto text-center text-white mb-0",
+                            ".alert--title",
                             timeout=60,
                         ):
                             if maildomain == "mail.gw" or maildomain == "mail.tm":
@@ -189,6 +190,7 @@ async def main():
                                     f"https://www.ghostlymail.com/api/mailboxes/{emailID}"
                                 ) as resp:
                                     msg = await resp.json()
+                                    print(msg)
                                     await asyncio.sleep(1)
                                     found = False
                                     for x in msg["emails"]:
@@ -229,7 +231,7 @@ async def main():
                 for account in accounts:
                     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     f.write(
-                        f"Email: {account['email']}, Password: {account['password']} (Created at {timestamp})\n"
+                        f"Email: {account['email']}, Password: {account['password']}, (Created at {timestamp})\n"
                     )
             print("\nAll accounts have been created. Here are the accounts' details:\n")
             for account in accounts:
