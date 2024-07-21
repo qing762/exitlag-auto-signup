@@ -10,7 +10,7 @@ A tool that auto fetch a temporary email address and creates an account at https
 
 ## How it works
 
-The process begins by utilizing the [Mail.GW](https://mail.gw/) service to obtain a temporary email address. This email address is then utilized to sign up for an [ExitLag](https://exitlag.com) account. Subsequently, another request is made to [Mail.GW](https://mail.gw/) to retrieve the email confirmation link. Upon activation of the account, the user is able to log in to the ExitLag application and benefit from its functionality.
+The process begins by utilizing the [Ghostlymail](https://www.ghostlymail.com/) service to obtain a temporary email address. This email address is then utilized to sign up for an [ExitLag](https://exitlag.com) account. Subsequently, another request is made to [Ghostlymail](https://www.ghostlymail.com/) to retrieve the email confirmation link. Upon activation of the account, the user is able to log in to the ExitLag application and benefit from its functionality.
 
 
 ## Features
@@ -49,23 +49,16 @@ python main.py
 
 And you're all set! Follow the instructions while interacting with the Python file.
 
+
 ## Known issues
 [Here are a list of known issues and on how you can fix it](https://github.com/qing762/exitlag-auto-signup/discussions/4)
+
 
 ## Contributing
 
 Contributions are always welcome!
 
 To contribute, fork this repository and improve it. After that, make a pull request.
-## FAQ
-#### Why did you create this?
-
-Due to persistent high ping of over 100 while participating in online gaming sessions with my peers, I frequently experienced disconnections from game servers. However, after utilizing ExitLag, my ping was reduced to a more manageable level of 40+. Despite the positive outcome, I was dissatisfied with the cumbersome sign-up process. As a result, I elected to develop a custom code solution that would automate this process, also eliminating the need for monetary expenditure.
-
-#### Is it bannable?
-
-I'm not sure but mostly it is as it bypasses Cloudflare's bot check as well as Google's Recaptcha.
-
 
 
 ## Feedback / Issues

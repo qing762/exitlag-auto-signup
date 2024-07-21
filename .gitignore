@@ -3,3 +3,7 @@ __pycache__/
 accounts.txt
 settings.toml
 /.vscode
+fastprox.txt
+spoof.cpp
+/lib/Detours
+/.vs
