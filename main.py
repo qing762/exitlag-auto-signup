@@ -115,16 +115,16 @@ async def main():
                         )
                         continue
 
-            with open("accounts.txt", "a") as f:
-                for account in accounts:
-                    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    f.write(
-                        f"Email: {account['email']}, Password: {account['password']}, (Created at {timestamp})\n"
-                    )
-            print("\nAll accounts have been created. Here are the accounts' details:\n")
+        with open("accounts.txt", "a") as f:
             for account in accounts:
-                print(f"Email: {account['email']}, Password: {account['password']}")
-            print("\nThey have been saved to the file accounts.txt.\nHave fun using ExitLag!")
+                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                f.write(
+                    f"Email: {account['email']}, Password: {account['password']}, (Created at {timestamp})\n"
+                )
+        print("\nAll accounts have been created. Here are the accounts' details:\n")
+        for account in accounts:
+            print(f"Email: {account['email']}, Password: {account['password']}")
+        print("\nThey have been saved to the file accounts.txt.\nHave fun using ExitLag!")
 
 if __name__ == "__main__":
     asyncio.run(main())

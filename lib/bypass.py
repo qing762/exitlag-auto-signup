@@ -1,9 +1,6 @@
 # SOURCE: https://github.com/sarperavci/CloudflareBypassForScraping
 
 
-
-
-
 import time
 from DrissionPage import ChromiumPage 
 
@@ -12,8 +9,8 @@ class CloudflareBypasser:
         self.driver = driver
 
     def clickCycle(self):
-        if self.driver.wait.ele_displayed('#turnstile-wrapper',timeout=1.5):
-            self.driver.ele("#turnstile-wrapper", timeout=2.5).click()
+        if self.driver.wait.ele_displayed('.spacer',timeout=1.5):
+            self.driver.ele(".spacer", timeout=2.5).click()
  
     def isBypassed(self):
         title = self.driver.title.lower()
