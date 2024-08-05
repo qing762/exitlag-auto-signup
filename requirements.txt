@@ -1,4 +1,3 @@
-aiohttp==3.9.5
 DrissionPage==4.0.4.23
 toml==0.10.2
 git+https://github.com/roniemartinez/browsers.git#egg=pybrowsers

@@ -2,16 +2,17 @@
 
 
 import time
-from DrissionPage import ChromiumPage 
+from DrissionPage import ChromiumPage
 
-class CloudflareBypasser:
+
+class CloudflareBypasser():
     def __init__(self, driver: ChromiumPage):
         self.driver = driver
 
     def clickCycle(self):
-        if self.driver.wait.ele_displayed('.spacer',timeout=1.5):
+        if self.driver.wait.ele_displayed('.spacer', timeout=1.5):
             self.driver.ele(".spacer", timeout=2.5).click()
- 
+
     def isBypassed(self):
         title = self.driver.title.lower()
         return "just a moment" not in title

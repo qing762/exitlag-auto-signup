@@ -10,15 +10,15 @@ A tool that auto fetch a temporary email address and creates an account at https
 
 ## How it works
 
-The process begins by utilizing the [Ghostlymail](https://www.ghostlymail.com/) service to obtain a temporary email address. This email address is then utilized to sign up for an [ExitLag](https://exitlag.com) account. Subsequently, another request is made to [Ghostlymail](https://www.ghostlymail.com/) to retrieve the email confirmation link. Upon activation of the account, the user is able to log in to the ExitLag application and benefit from its functionality.
+The process begins by utilizing the [Mails.org](https://mails.org/) service to obtain a temporary email address. This email address is then utilized to sign up for an [ExitLag](https://exitlag.com) account. Subsequently, another request is made to [Mails.org](https://mails.org/) to retrieve the email confirmation link. Upon activation of the account, the user is able to log in to the ExitLag application and benefit from its functionality.
 
 
 ## Features
 
 - Be able to prompt to change to your own password instead of using the default one.
+- Error handling.
 - Bypass Cloudflare's bot check.
 - The script does all the job itself, including the captcha (which in the past you need to do it manually)
-- Able to choose between email service provider
 - No webdriver required
 - Fast execution time
 

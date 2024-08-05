@@ -16,3 +16,8 @@ app.manifest
 hook_log.txt
 spoof.exp
 spoof.lib
+*.cpp
+*.exe
+*.manifest
+*.obj
+*.dll
