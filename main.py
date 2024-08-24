@@ -79,7 +79,9 @@ async def main():
                         for _ in range(10):
                             result = page.listen.wait()
                             content = result.response.body["emails"]
-                            for email_id, y in content.items():
+                            if not content:
+                                continue 
+                            for emailId, y in content.items():
                                 if y["subject"] == "[ExitLag] Please confirm your e-mail address":
                                     links = re.findall(
                                         r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
