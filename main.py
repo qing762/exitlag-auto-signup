@@ -11,6 +11,7 @@ from datetime import datetime
 
 warnings.filterwarnings("ignore", category=TqdmExperimentalWarning)
 
+
 async def main():
     lib = Main()
     port = ChromiumOptions().auto_port()
@@ -65,11 +66,15 @@ async def main():
             if not email:
                 print("Failed to generate email. Exiting...")
                 continue
-            bar.set_description(f"Generate account process completed [{i + 1}/{executionCount}]")
+            bar.set_description(
+                f"Generate account process completed [{i + 1}/{executionCount}]"
+            )
             bar.update(15)
             tab = page.new_tab("https://www.exitlag.com/register")
             CloudflareBypasser(tab).bypass()
-            bar.set_description(f"Bypassed Cloudflare captcha protection [{i + 1}/{executionCount}]")
+            bar.set_description(
+                f"Bypassed Cloudflare captcha protection [{i + 1}/{executionCount}]"
+            )
             bar.update(5)
             print()
             if tab.ele("#inputFirstName", timeout=60):
@@ -81,27 +86,36 @@ async def main():
                 await asyncio.sleep(1)
                 page.listen.start("https://mails.org", method="POST")
                 tab.ele(".icheck-button").click()
-                bar.set_description(f"Signup process completed [{i + 1}/{executionCount}]")
+                bar.set_description(
+                    f"Signup process completed [{i + 1}/{executionCount}]"
+                )
                 bar.update(30)
                 tab.ele(
                     ".btn btn-primary btn-line fw-500 font-18 py-2 w-100  btn-recaptcha btn-recaptcha-invisible"
                 ).click()
-                if tab.wait.url_change("https://www.exitlag.com/clientarea.php", timeout=60):
+                if tab.wait.url_change(
+                    "https://www.exitlag.com/clientarea.php", timeout=60
+                ):
                     if tab.ele(".alert--title", timeout=60):
                         link = None
                         for a in range(10):
                             result = page.listen.wait()
                             content = result.response.body["emails"]
                             if not content:
-                                continue 
+                                continue
                             for emailId, y in content.items():
-                                if y["subject"] == "[ExitLag] Please confirm your e-mail address":
+                                if (
+                                    y["subject"]
+                                    == "[ExitLag] Please confirm your e-mail address"
+                                ):
                                     links = re.findall(
                                         r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
                                         y["body"],
                                     )
                                     for link in links:
-                                        if link.startswith("https://www.exitlag.com/user/verify"):
+                                        if link.startswith(
+                                            "https://www.exitlag.com/user/verify"
+                                        ):
                                             link = re.sub(r"</?[^>]+>", "", link)
                                             break
                                 if link:
@@ -109,11 +123,15 @@ async def main():
                             if link:
                                 break
                         if link:
-                            bar.set_description(f"Visiting verify email link [{i + 1}/{executionCount}]")
+                            bar.set_description(
+                                f"Visiting verify email link [{i + 1}/{executionCount}]"
+                            )
                             bar.update(20)
                             tab.get(link)
                             await asyncio.sleep(5)
-                            bar.set_description(f"Clearing cache and data [{i + 1}/{executionCount}]")
+                            bar.set_description(
+                                f"Clearing cache and data [{i + 1}/{executionCount}]"
+                            )
                             bar.update(9)
                             tab.set.cookies.clear()
                             tab.clear_cache()
@@ -121,12 +139,16 @@ async def main():
                             page.clear_cache()
                             page.quit()
                             accounts.append({"email": email, "password": passw})
-                            bar.set_description(f"All process completed [{i + 1}/{executionCount}]")
+                            bar.set_description(
+                                f"All process completed [{i + 1}/{executionCount}]"
+                            )
                             bar.update(1)
                             bar.close()
                             print()
                         else:
-                            print("Failed to find the verify email. Skipping and continuing...\n")
+                            print(
+                                "Failed to find the verify email. Skipping and continuing...\n"
+                            )
                     else:
                         print("Failed to find the element. Exiting...")
                 else:
@@ -143,7 +165,10 @@ async def main():
         print("\nAll accounts have been created. Here are the accounts' details:\n")
         for account in accounts:
             print(f"Email: {account['email']}, Password: {account['password']}")
-        print("\nThey have been saved to the file accounts.txt.\nHave fun using ExitLag!")
+        print(
+            "\nThey have been saved to the file accounts.txt.\nHave fun using ExitLag!"
+        )
+
 
 if __name__ == "__main__":
     asyncio.run(main())

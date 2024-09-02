@@ -80,7 +80,7 @@ class Main:
                         print(f"Blocked {x} in the host file.")
                 data["blockIP"]["blocked"] = True
                 print(
-                    "Be sure to use a HWID spoofer as well to get the 3 days trial. Not sure this method will work currently or not, but it's worth a try."
+                    "Be sure to use a HWID spoofer as well to get the 3 days trial. One of the suggested spoofer is Monotone HWID Spoofer (https://github.com/sr2echa/Monotone-HWID-Spoofer)."
                 )
             except PermissionError:
                 print(
