@@ -2,3 +2,8 @@ __pycache__/
 .git/
 accounts.txt
 settings.toml
+/.vscode
+/.vs
+/lib/Detours
+proxy.py
+wayback.py

@@ -1,45 +1,45 @@
 import string
 import random
-import time
 import toml
+import asyncio
 import platform
 
 
 class Main():
-    def getRandomString(self, length):
+    async def ainput(prompt: str = "") -> str:
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(None, input, prompt)
+
+    async def getRandomString(self, length):
         letters = string.ascii_lowercase
         return "".join(random.choice(letters) for i in range(length))
 
-    def waitUntilUrl(self, page, targetUrl, timeout=30):
-        startTime = time.time()
-        while time.time() - startTime < timeout:
-            if page.url == targetUrl:
-                return True
-            time.sleep(0.5)
-        return False
+    async def getDomain(self, request, maildomain):
+        async with request.get(f"https://api.{maildomain}/domains", params={"page": "1"}) as resp:
+            return await resp.json()
 
-    def getDomain(self, request, maildomain):
-        return request.get(f"https://api.{maildomain}/domains", params={"page": "1"}).json()
-
-    def registerAccount(self, request, maildomain, domain, passw):
-        register = request.post(
+    async def registerAccount(self, session, maildomain, domain, passw):
+        async with session.post(
             f"https://api.{maildomain}/accounts",
             json={
-                "address": f'{self.getRandomString(15)}@{domain["domain"]}',
+                "address": f'{await self.getRandomString(15)}@{domain["domain"]}',
                 "password": passw,
             },
-        ).json()
+        ) as resp:
+            register = await resp.json()
         email = register["address"]
-        token = request.post(
+        async with session.post(
             f"https://api.{maildomain}/token", json={"address": email, "password": passw}
-        ).json()["token"]
+        ) as resp:
+            respJson = await resp.json()
+            token = respJson["token"]
         return email, token
 
-    def switchDomain(maildomain, externaldomain):
+    async def switchDomain(maildomain, externaldomain):
         print(f"Mail domain {maildomain} is not currently not available. Switching to the domain {externaldomain}...")
         return externaldomain
 
-    def getSettingsAndBlockIP(self):
+    async def getSettingsAndBlockIP(self):
         try:
             data = toml.load("settings.toml")
         except FileNotFoundError:
