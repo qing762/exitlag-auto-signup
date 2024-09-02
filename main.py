@@ -1,11 +1,15 @@
 import asyncio
 import re
 import browsers
+import warnings
+from tqdm import TqdmExperimentalWarning
+from tqdm.rich import tqdm
 from DrissionPage import ChromiumPage, ChromiumOptions
 from lib.bypass import CloudflareBypasser
 from lib.lib import Main
 from datetime import datetime
 
+warnings.filterwarnings("ignore", category=TqdmExperimentalWarning)
 
 async def main():
     lib = Main()
@@ -46,7 +50,10 @@ async def main():
                     print("Invalid number given. Please enter a valid number.")
         print()
 
-        for _ in range(int(executionCount)):
+        for i in range(int(executionCount)):
+            bar = tqdm(total=100)
+            bar.set_description(f"Initial setup completed [{i + 1}/{executionCount}]")
+            bar.update(20)
             page = ChromiumPage(port)
             page.listen.start("https://mails.org", method="POST")
             page.get("https://mails.org")
@@ -58,8 +65,12 @@ async def main():
             if not email:
                 print("Failed to generate email. Exiting...")
                 continue
+            bar.set_description(f"Generate account process completed [{i + 1}/{executionCount}]")
+            bar.update(15)
             tab = page.new_tab("https://www.exitlag.com/register")
             CloudflareBypasser(tab).bypass()
+            bar.set_description(f"Bypassed Cloudflare captcha protection [{i + 1}/{executionCount}]")
+            bar.update(5)
             print()
             if tab.ele("#inputFirstName", timeout=60):
                 tab.ele("#inputFirstName").input("qing")
@@ -68,15 +79,17 @@ async def main():
                 tab.ele("#inputNewPassword1").input(passw)
                 tab.ele("#inputNewPassword2").input(passw)
                 await asyncio.sleep(1)
+                page.listen.start("https://mails.org", method="POST")
                 tab.ele(".icheck-button").click()
+                bar.set_description(f"Signup process completed [{i + 1}/{executionCount}]")
+                bar.update(30)
                 tab.ele(
                     ".btn btn-primary btn-line fw-500 font-18 py-2 w-100  btn-recaptcha btn-recaptcha-invisible"
                 ).click()
                 if tab.wait.url_change("https://www.exitlag.com/clientarea.php", timeout=60):
                     if tab.ele(".alert--title", timeout=60):
-                        page.listen.start("https://mails.org", method="POST")
                         link = None
-                        for _ in range(10):
+                        for a in range(10):
                             result = page.listen.wait()
                             content = result.response.body["emails"]
                             if not content:
@@ -96,14 +109,22 @@ async def main():
                             if link:
                                 break
                         if link:
+                            bar.set_description(f"Visiting verify email link [{i + 1}/{executionCount}]")
+                            bar.update(20)
                             tab.get(link)
                             await asyncio.sleep(5)
+                            bar.set_description(f"Clearing cache and data [{i + 1}/{executionCount}]")
+                            bar.update(9)
                             tab.set.cookies.clear()
                             tab.clear_cache()
                             page.set.cookies.clear()
                             page.clear_cache()
                             page.quit()
                             accounts.append({"email": email, "password": passw})
+                            bar.set_description(f"All process completed [{i + 1}/{executionCount}]")
+                            bar.update(1)
+                            bar.close()
+                            print()
                         else:
                             print("Failed to find the verify email. Skipping and continuing...\n")
                     else:
