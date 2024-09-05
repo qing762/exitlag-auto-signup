@@ -90,6 +90,10 @@ async def main():
                     f"Signup process completed [{i + 1}/{executionCount}]"
                 )
                 bar.update(30)
+                try:
+                    tab.ele(".btn btn-primary btn-block  btn-recaptcha btn-recaptcha-invisible").remove_attr('disabled')
+                except Exception:
+                    pass
                 tab.ele(
                     ".btn btn-primary btn-block  btn-recaptcha btn-recaptcha-invisible"
                 ).click()
