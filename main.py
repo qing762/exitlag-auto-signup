@@ -85,13 +85,13 @@ async def main():
                 tab.ele("#inputNewPassword2").input(passw)
                 await asyncio.sleep(1)
                 page.listen.start("https://mails.org", method="POST")
-                tab.ele(".icheck-button").click()
+                tab.ele(".custom-checkbox--input checkbox").click()
                 bar.set_description(
                     f"Signup process completed [{i + 1}/{executionCount}]"
                 )
                 bar.update(30)
                 tab.ele(
-                    ".btn btn-primary btn-line fw-500 font-18 py-2 w-100  btn-recaptcha btn-recaptcha-invisible"
+                    ".btn btn-primary btn-block  btn-recaptcha btn-recaptcha-invisible"
                 ).click()
                 if tab.wait.url_change(
                     "https://www.exitlag.com/clientarea.php", timeout=60
