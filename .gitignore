@@ -6,5 +6,5 @@ settings.toml
 /.vscode
 /.vs
 /lib/Detours
-proxy.py
-wayback.py
+spoof.cpp
+test.cpp
