@@ -38,7 +38,8 @@ async def main():
         bar = tqdm(total=100)
         bar.set_description(f"Initial setup completed [{x + 1}/{executionCount}]")
         bar.update(20)
-        page = Chromium(addr_or_opts=port).latest_tab
+        chrome = Chromium(addr_or_opts=port)
+        page = chrome.get_tab(id_or_num=1)
         page.listen.start("https://mails.org", method="POST")
         page.get("https://mails.org")
 
@@ -55,7 +56,7 @@ async def main():
         bar.set_description(f"Account generation process [{x + 1}/{executionCount}]")
         bar.update(15)
 
-        tab = page.new_tab("https://www.exitlag.com/register")
+        tab = chrome.new_tab("https://www.exitlag.com/register")
         CloudflareBypasser(tab).bypass()
 
         bar.set_description(f"Cloudflare captcha bypass [{x + 1}/{executionCount}]")
@@ -146,9 +147,9 @@ async def main():
                     bar.update(9)
                     tab.set.cookies.clear()
                     tab.clear_cache()
-                    page.set.cookies.clear()
-                    page.clear_cache()
-                    page.quit()
+                    chrome.set.cookies.clear()
+                    chrome.clear_cache()
+                    chrome.quit()
 
                     accounts.append({"email": email, "password": passw})
 
