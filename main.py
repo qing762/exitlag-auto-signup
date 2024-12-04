@@ -57,7 +57,10 @@ async def main():
         bar.update(15)
 
         tab = chrome.new_tab("https://www.exitlag.com/register")
-        CloudflareBypasser(tab).bypass()
+        try:
+            CloudflareBypasser(tab).bypass()
+        except tab.ele("#inputFirstName"):
+            pass
 
         bar.set_description(f"Cloudflare captcha bypass [{x + 1}/{executionCount}]")
         bar.update(5)
