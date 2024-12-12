@@ -1,3 +1,4 @@
-DrissionPage==4.1.0.12
+DrissionPage==4.1.0.13
 toml==0.10.2
 tqdm==4.66.3
+rich==13.8.0
