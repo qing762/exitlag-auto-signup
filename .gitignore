@@ -11,3 +11,4 @@ test.cpp
 build/
 dist/
 *.spec
+*.exe

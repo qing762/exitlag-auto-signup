@@ -35,7 +35,7 @@ jobs:
 
       - name: Build executable
         run: |
-          pyinstaller --onefile --clean --name "exitlag-auto-signup v3.${{ github.run_number }}" main.py
+          pyinstaller --onefile --clean --name "exitlag-auto-signup v3.${{ github.run_number }}" main.py --distpath "./"
 
       - name: Create a new tag
         run: |
@@ -48,7 +48,8 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v2.0.4
         with:
-          files: "./dist/exitlag-auto-signup v3.${{ github.run_number }}.exe"
+          files: |
+            exitlag-auto-signup v3.${{ github.run_number }}.exe
           name: "Release v3.${{ github.run_number }}"
-          body: "Commit: ${{ github.sha }}\nDownload the `exitlag-auto-signup v3.${{ github.run_number }}.exe` file or the source code and you are good to go!"
+          body: "Commit: ${{ github.sha }}\nDownload the `exitlag-auto-signup v3.${{ github.run_number }}.exe` file or the `source code` and you are good to go!"
           tag_name: "v3.${{ github.run_number }}"
