@@ -1,8 +1,6 @@
 import string
 import random
-import toml
 import asyncio
-import platform
 
 
 class Main:
@@ -43,6 +41,7 @@ class Main:
             f"Mail domain {maildomain} is not currently not available. Switching to the domain {externaldomain}..."
         )
         return externaldomain
+
 
 if __name__ == "__main__":
     print("This is a library file. Please run main.py instead.")

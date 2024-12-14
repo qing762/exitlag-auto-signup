@@ -4,6 +4,7 @@
 import time
 from DrissionPage import ChromiumPage
 
+
 class CloudflareBypasser:
     def __init__(self, driver: ChromiumPage, max_retries=-1, log=True):
         self.driver = driver
@@ -37,7 +38,7 @@ class CloudflareBypasser:
         except Exception as e:
             self.log_message(f"Error searching shadow root with CF input: {e}")
         return None
-    
+
     def locate_cf_button(self):
         try:
             button = None
@@ -47,7 +48,7 @@ class CloudflareBypasser:
                     if "turnstile" in ele.attrs["name"] and ele.attrs["type"] == "hidden":
                         button = ele.parent().shadow_root.child()("tag:body").shadow_root("tag:input")
                         break
-            
+
             if button:
                 return button
             else:

@@ -9,6 +9,7 @@ from lib.bypass import CloudflareBypasser
 
 warnings.filterwarnings("ignore", category=TqdmExperimentalWarning)
 
+
 async def main():
 
     port = ChromiumOptions().auto_port()
@@ -29,7 +30,7 @@ async def main():
     )
     print()
     executionCount = int(executionCount) if executionCount.isdigit() else 1
-    
+
     for x in range(executionCount):
         bar = tqdm(total=100)
         bar.set_description(f"Initial setup completed [{x + 1}/{executionCount}]")
@@ -142,7 +143,7 @@ async def main():
                     bar.update(20)
                     tab.get(link)
 
-                    bar.set_description(f"Clearing cache and data")
+                    bar.set_description("Clearing cache and data")
                     bar.update(9)
                     tab.set.cookies.clear()
                     tab.clear_cache()
