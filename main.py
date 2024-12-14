@@ -6,14 +6,10 @@ from tqdm import TqdmExperimentalWarning
 from tqdm.rich import tqdm
 from DrissionPage import Chromium, ChromiumOptions
 from lib.bypass import CloudflareBypasser
-from lib.lib import Main
 
 warnings.filterwarnings("ignore", category=TqdmExperimentalWarning)
 
 async def main():
-    lib = Main()
-
-    await lib.getSettingsAndBlockIP()
 
     port = ChromiumOptions().auto_port()
 

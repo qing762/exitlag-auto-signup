@@ -24,30 +24,37 @@ The process begins by utilizing the [Mails.org](https://mails.org/) service to o
 
 > **Warning**
 > It is important to note that excessive usage of this tool may result in rate limiting by the API or, in severe cases, IP blocking. To avoid these potential consequences, it is recommended to limit the number of usage. (Maybe 5 times every 10 minutes?)
+
+
 ## Installation / Usage
 
 ### [>>> VIDEO GUIDE <<<](https://qing762.is-a.dev/exitlag-guide)
 
-First, clone this repository:
+1. Portable executable method:
+- Just download the executable from the [releases tab](https://github.com/qing762/exitLag-auto-signup/releases) and run it to generate accounts.
+- The account details should be generated at the `accounts.txt` file under the same directory.
+
+2. Python file method:
+ - First, clone this repository:
 ```shell
 git clone https://github.com/qing762/exitLag-auto-signup/
 ```
-Install [Google Chrome](https://google.com/chrome/) (IMPORTANT!)
+- Install [Google Chrome](https://google.com/chrome/) (IMPORTANT!)
 ```shell
 INSTALL HERE: https://google.com/chrome/
 ```
 
-Install the necessary dependencies:
+- Install the necessary dependencies:
 ```shell
 pip install -r requirements.txt
 ```
 
-Finally, run the Python file:
+- Finally, run the Python file:
 ```shell
 python main.py
 ```
 
-And you're all set! Follow the instructions while interacting with the Python file.
+- And you're all set! Follow the instructions while interacting with the Python file.
 
 
 ## Known issues
@@ -72,4 +79,4 @@ If the company wishes to discontinue or terminate this project, please do not he
 
 ## License
 
-[MIT LICENSE](https://choosealicense.com/licenses/mit/)
+[MIT LICENSE](https://choosealicense.com/licenses/mit

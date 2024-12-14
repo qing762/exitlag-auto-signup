@@ -33,6 +33,10 @@ jobs:
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 . --count --exit-zero --max-complexity=40 --max-line-length=300 --statistics
 
+      - name: Build executable
+        run: |
+          pyinstaller --onefile --clean --name "exitlag-auto-signup v3.${{ github.run_number }}" main.py
+
       - name: Zip repo files
         uses: papeloto/action-zip@v1.2
         with:
@@ -43,7 +47,7 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v2.0.4
         with:
-          files: release.zip
+          files: release.zip, exitlag-auto-signup v3.${{ github.run_number }}.exe
           name: "Release v3.${{ github.run_number }}"
-          body: "Commit: ${{ github.sha }}\nDownload the `release.zip` file and you are good to go!\nContinue by following the steps given in the README."
+          body: "Commit: ${{ github.sha }}\nDownload the `exitlag-auto-signup v3.${{ github.run_number }}.exe` file and you are good to go!"
           tag_name: ${{ github.ref_name }}

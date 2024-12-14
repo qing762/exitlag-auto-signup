@@ -8,3 +8,6 @@ settings.toml
 /lib/Detours
 spoof.cpp
 test.cpp
+build/
+dist/
+main.spec
