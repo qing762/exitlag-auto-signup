@@ -42,6 +42,9 @@ jobs:
           upload_exe_with_name: 'Exitlag Auto Signup v3.${{ github.run_number }}'
           options: --onefile, --name "exitlag-auto-signup v3.${{ github.run_number }}", --clean
 
+      - name: List files for debugging
+        run: ls -R
+
       - name: Upload Executable
         uses: actions/upload-artifact@v3
         with:
