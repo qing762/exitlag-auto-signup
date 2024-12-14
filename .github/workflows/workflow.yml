@@ -35,10 +35,7 @@ jobs:
 
       - name: Build executable
         run: |
-          pyinstaller --onefile --clean --name "exitlag-auto-signup v3.${{ github.run_number }}" main.py
-
-      - name: List files for debugging
-        run: ls -R
+          pyinstaller --onefile --clean --name "exitlag-auto-signup v3.${{ github.run_number }}.exe" main.py
 
       - name: Upload Executable
         uses: actions/upload-artifact@v3
