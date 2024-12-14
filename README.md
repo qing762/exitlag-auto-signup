@@ -30,11 +30,11 @@ The process begins by utilizing the [Mails.org](https://mails.org/) service to o
 
 ### [>>> VIDEO GUIDE <<<](https://qing762.is-a.dev/exitlag-guide)
 
-1. Portable executable method:
+#### 1. Portable executable method:
 - Just download the executable from the [releases tab](https://github.com/qing762/exitLag-auto-signup/releases) and run it to generate accounts.
 - The account details should be generated at the `accounts.txt` file under the same directory.
 
-2. Python file method:
+#### 2. Python file method:
  - First, clone this repository:
 ```shell
 git clone https://github.com/qing762/exitLag-auto-signup/

@@ -37,11 +37,18 @@ jobs:
         run: |
           pyinstaller --onefile --clean --name "exitlag-auto-signup v3.${{ github.run_number }}" main.py
 
+      - name: Create a new tag
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v3.${{ github.run_number }}" -m "Release v3.${{ github.run_number }}"
+          git push origin "v3.${{ github.run_number }}"
+
       - name: Publish code
         id: create_release
         uses: softprops/action-gh-release@v2.0.4
         with:
-          files: "exitlag-auto-signup v3.${{ github.run_number }}.exe"
+          files: "dist/exitlag-auto-signup v3.${{ github.run_number }}.exe"
           name: "Release v3.${{ github.run_number }}"
           body: "Commit: ${{ github.sha }}\nDownload the `exitlag-auto-signup v3.${{ github.run_number }}.exe` file and you are good to go!"
-          tag_name: ${{ github.ref_name }}
+          tag_name: "v3.${{ github.run_number }}"
