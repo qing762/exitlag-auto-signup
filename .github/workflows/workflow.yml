@@ -33,15 +33,9 @@ jobs:
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 . --count --exit-zero --max-complexity=40 --max-line-length=300 --statistics
 
-      - name: Create Executable
-        uses: sayyid5416/pyinstaller@v1
-        with:
-          python_ver: '3.10'
-          spec: 'main.py'
-          requirements: 'requirements.txt'
-          upload_exe_with_name: 'Exitlag Auto Signup v3.${{ github.run_number }}'
-          options: --onefile, --name "exitlag-auto-signup v3.${{ github.run_number }}.exe", --clean
-          compression_level: 0
+      - name: Build executable
+        run: |
+          pyinstaller --onefile --clean --name "exitlag-auto-signup v3.${{ github.run_number }}" main.py
 
       - name: List files for debugging
         run: ls -R
