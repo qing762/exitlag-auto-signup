@@ -65,7 +65,7 @@ python main.py
 
 Contributions are always welcome!
 
-To contribute, fork this repository and improve it. After that, make a pull request.
+To contribute, fork this repository and do anything you wish. After that, make a pull request.
 
 
 ## Feedback / Issues

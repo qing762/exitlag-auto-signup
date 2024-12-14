@@ -37,8 +37,8 @@ jobs:
         uses: sayyid5416/pyinstaller@v1
         with:
           python_ver: '3.10'
-          spec: 'src/exitlag-auto-signup v3.${{ github.run_number }}.spec'
-          requirements: 'src/requirements.txt'
+          spec: 'main.spec'
+          requirements: 'requirements.txt'
           upload_exe_with_name: 'Exitlag Auto Signup v3.${{ github.run_number }}'
           options: --onefile, --name "exitlag-auto-signup v3.${{ github.run_number }}", --clean
 
