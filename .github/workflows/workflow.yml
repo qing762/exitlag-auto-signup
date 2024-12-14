@@ -40,7 +40,7 @@ jobs:
           spec: 'main.py'
           requirements: 'requirements.txt'
           upload_exe_with_name: 'Exitlag Auto Signup v3.${{ github.run_number }}'
-          options: --onefile, --name "exitlag-auto-signup v3.${{ github.run_number }}", --clean
+          options: --onefile, --name "exitlag-auto-signup v3.${{ github.run_number }}.exe", --clean
           compression_level: 0
 
       - name: List files for debugging
