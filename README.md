@@ -78,3 +78,11 @@ If the company wishes to discontinue or terminate this project, please do not he
 ## License
 
 [MIT LICENSE](https://choosealicense.com/licenses/mit
+
+---
+
+
+![Alt](https://repobeats.axiom.co/api/embed/5fa1c9e927a371aaef22a77745c207680dcac293.svg "Repobeats analytics image")
+
+
+---
