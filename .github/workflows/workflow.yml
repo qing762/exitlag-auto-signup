@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Exitlag Auto Signup v3.${{ github.run_number }}
-          path: exitlag-auto-signup v3.${{ github.run_number }}.exe
+          path: ./dist/exitlag-auto-signup v3.${{ github.run_number }}.exe
   
       - name: Create a new tag
         run: |
@@ -64,7 +64,7 @@ jobs:
         uses: softprops/action-gh-release@v2.0.4
         with:
           files: |
-            exitlag-auto-signup v3.${{ github.run_number }}.exe
+            ./dist/exitlag-auto-signup v3.${{ github.run_number }}.exe
           name: "Release v3.${{ github.run_number }}"
           body: "Commit: ${{ github.sha }}\nDownload the `exitlag-auto-signup v3.${{ github.run_number }}.exe` file or the `source code` and you are good to go!"
           tag_name: "v3.${{ github.run_number }}"
