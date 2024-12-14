@@ -48,7 +48,7 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v2.0.4
         with:
-          files: "dist/exitlag-auto-signup v3.${{ github.run_number }}.exe"
+          files: "./dist/exitlag-auto-signup v3.${{ github.run_number }}.exe"
           name: "Release v3.${{ github.run_number }}"
-          body: "Commit: ${{ github.sha }}\nDownload the `exitlag-auto-signup v3.${{ github.run_number }}.exe` file and you are good to go!"
+          body: "Commit: ${{ github.sha }}\nDownload the `exitlag-auto-signup v3.${{ github.run_number }}.exe` file or the source code and you are good to go!"
           tag_name: "v3.${{ github.run_number }}"

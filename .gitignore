@@ -10,4 +10,4 @@ spoof.cpp
 test.cpp
 build/
 dist/
-main.spec
+*.spec
