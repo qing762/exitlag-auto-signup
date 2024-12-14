@@ -32,6 +32,7 @@ The process begins by utilizing the [Mails.org](https://mails.org/) service to o
 
 #### 1. Portable executable method:
 - Just download the executable from the [releases tab](https://github.com/qing762/exitLag-auto-signup/releases) and run it to generate accounts.
+- If your antivirus has flagged for potential malware, that should be a false flag so feel free to safely ignore. If you dont trust it enough somehow, feel free to use [Step 2](https://github.com/qing762/exitlag-auto-signup#2-python-file-method) instead.
 - The account details should be generated at the `accounts.txt` file under the same directory.
 
 #### 2. Python file method:
