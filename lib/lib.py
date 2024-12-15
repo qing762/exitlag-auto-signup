@@ -1,46 +1,133 @@
-import string
-import random
-import asyncio
+import time
+import requests
+from DrissionPage import ChromiumPage
 
 
 class Main:
-    async def ainput(prompt: str = "") -> str:
-        loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(None, input, prompt)
+    async def checkUpdate(self):
+        try:
+            # Get the latest version from GitHub API
+            resp = requests.get(
+                "https://api.github.com/repos/qing762/exitlag-auto-signup/releases/latest"
+            )
+            latestVer = resp.json()["tag_name"]
 
-    async def getRandomString(self, length):
-        letters = string.ascii_lowercase
-        return "".join(random.choice(letters) for i in range(length))
+            # Read the current version from version.txt
+            with open("version.txt", "r") as file:
+                currentVer = file.read().strip()
 
-    async def getDomain(self, request, maildomain):
-        async with request.get(
-            f"https://api.{maildomain}/domains", params={"page": "1"}
-        ) as resp:
-            return await resp.json()
+            # Compare versions
+            if currentVer < latestVer:
+                print(f"Update available: {latestVer}\nYou can download the latest version from: https://github.com/qing762/exitlag-auto-signup/releases/latest\n")
+            else:
+                pass
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            pass
 
-    async def registerAccount(self, session, maildomain, domain, passw):
-        async with session.post(
-            f"https://api.{maildomain}/accounts",
-            json={
-                "address": f'{await self.getRandomString(15)}@{domain["domain"]}',
-                "password": passw,
-            },
-        ) as resp:
-            register = await resp.json()
-        email = register["address"]
-        async with session.post(
-            f"https://api.{maildomain}/token",
-            json={"address": email, "password": passw},
-        ) as resp:
-            respJson = await resp.json()
-            token = respJson["token"]
-        return email, token
 
-    async def switchDomain(maildomain, externaldomain):
-        print(
-            f"Mail domain {maildomain} is not currently not available. Switching to the domain {externaldomain}..."
-        )
-        return externaldomain
+class CloudflareBypasser:
+    # SOURCE: https://github.com/sarperavci/CloudflareBypassForScraping
+    def __init__(self, driver: ChromiumPage, max_retries=-1, log=True):
+        self.driver = driver
+        self.max_retries = max_retries
+        self.log = log
+
+    def search_recursively_shadow_root_with_iframe(self, ele):
+        try:
+            if ele.shadow_root:
+                if ele.shadow_root.child().tag == "iframe":
+                    return ele.shadow_root.child()
+            else:
+                for child in ele.children():
+                    result = self.search_recursively_shadow_root_with_iframe(child)
+                    if result:
+                        return result
+        except Exception as e:
+            self.log_message(f"Error searching shadow root with iframe: {e}")
+        return None
+
+    def search_recursively_shadow_root_with_cf_input(self, ele):
+        try:
+            if ele.shadow_root:
+                if ele.shadow_root.ele("tag:input"):
+                    return ele.shadow_root.ele("tag:input")
+            else:
+                for child in ele.children():
+                    result = self.search_recursively_shadow_root_with_cf_input(child)
+                    if result:
+                        return result
+        except Exception as e:
+            self.log_message(f"Error searching shadow root with CF input: {e}")
+        return None
+
+    def locate_cf_button(self):
+        try:
+            button = None
+            eles = self.driver.eles("tag:input")
+            for ele in eles:
+                if "name" in ele.attrs.keys() and "type" in ele.attrs.keys():
+                    if "turnstile" in ele.attrs["name"] and ele.attrs["type"] == "hidden":
+                        button = ele.parent().shadow_root.child()("tag:body").shadow_root("tag:input")
+                        break
+
+            if button:
+                return button
+            else:
+                # If the button is not found, search it recursively
+                self.log_message("Basic search failed. Searching for button recursively.")
+                ele = self.driver.ele("tag:body")
+                iframe = self.search_recursively_shadow_root_with_iframe(ele)
+                if iframe:
+                    button = self.search_recursively_shadow_root_with_cf_input(iframe("tag:body"))
+                else:
+                    self.log_message("Iframe not found. Button search failed.")
+                return button
+        except Exception as e:
+            self.log_message(f"Error locating CF button: {e}")
+            return None
+
+    def log_message(self, message):
+        if self.log:
+            print(message)
+
+    def click_verification_button(self):
+        try:
+            button = self.locate_cf_button()
+            if button:
+                self.log_message("Verification button found. Attempting to click.")
+                button.click()
+            else:
+                self.log_message("Verification button not found.")
+        except Exception as e:
+            self.log_message(f"Error clicking verification button: {e}")
+
+    def is_bypassed(self):
+        try:
+            title = self.driver.title.lower()
+            return "just a moment" not in title
+        except Exception as e:
+            self.log_message(f"Error checking page title: {e}")
+            return False
+
+    def bypass(self):
+        try_count = 0
+
+        while not self.is_bypassed():
+            if 0 < self.max_retries + 1 <= try_count:
+                self.log_message("Exceeded maximum retries. Bypass failed.")
+                break
+
+            self.log_message(f"Attempt {try_count + 1}: Verification page detected. Trying to bypass...")
+            self.click_verification_button()
+
+            try_count += 1
+            time.sleep(2)
+
+        if self.is_bypassed():
+            self.log_message("Bypass successful.")
+        else:
+            self.log_message("Bypass failed.")
 
 
 if __name__ == "__main__":

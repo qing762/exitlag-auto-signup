@@ -2,12 +2,9 @@
 __pycache__/
 .git/
 accounts.txt
-settings.toml
 /.vscode
 /.vs
-/lib/Detours
-spoof.cpp
-test.cpp
 build/
 dist/
 *.exe
+assignVer.py

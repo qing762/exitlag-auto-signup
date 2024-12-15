@@ -5,14 +5,17 @@ import time
 from tqdm import TqdmExperimentalWarning
 from tqdm.rich import tqdm
 from DrissionPage import Chromium, ChromiumOptions
-from lib.bypass import CloudflareBypasser
+from lib.lib import Main, CloudflareBypasser
 
 warnings.filterwarnings("ignore", category=TqdmExperimentalWarning)
 
 
 async def main():
-
+    lib = Main()
     port = ChromiumOptions().auto_port()
+
+    print("Checking for updates...")
+    await lib.checkUpdate()
 
     passw = (
         input(
