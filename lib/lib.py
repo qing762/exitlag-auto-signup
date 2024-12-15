@@ -1,24 +1,26 @@
 import time
 import requests
+import sys
 from DrissionPage import ChromiumPage
 
 
 class Main:
     async def checkUpdate(self):
         try:
-            # Get the latest version from GitHub API
             resp = requests.get(
                 "https://api.github.com/repos/qing762/exitlag-auto-signup/releases/latest"
             )
             latestVer = resp.json()["tag_name"]
 
-            # Read the current version from version.txt
-            with open("version.txt", "r") as file:
-                currentVer = file.read().strip()
+            if getattr(sys, 'frozen', False):
+                import version
+                currentVer = version.__version__
+            else:
+                with open("version.txt", "r") as file:
+                    currentVer = file.read().strip()
 
-            # Compare versions
             if currentVer < latestVer:
-                print(f"Update available: {latestVer}\nYou can download the latest version from: https://github.com/qing762/exitlag-auto-signup/releases/latest\n")
+                print(f"Update available: {latestVer} (Current version: {currentVer})\nYou can download the latest version from: https://github.com/qing762/exitlag-auto-signup/releases/latest\n")
             else:
                 pass
         except Exception as e:
@@ -74,7 +76,6 @@ class CloudflareBypasser:
             if button:
                 return button
             else:
-                # If the button is not found, search it recursively
                 self.log_message("Basic search failed. Searching for button recursively.")
                 ele = self.driver.ele("tag:body")
                 iframe = self.search_recursively_shadow_root_with_iframe(ele)
