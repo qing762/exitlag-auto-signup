@@ -77,7 +77,7 @@ If the company wishes to discontinue or terminate this project, please do not he
 
 ## License
 
-[MIT LICENSE](https://choosealicense.com/licenses/mit
+[MIT LICENSE](https://choosealicense.com/licenses/mit)
 
 ---
 
