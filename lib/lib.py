@@ -22,6 +22,7 @@ class Main:
             if currentVer < latestVer:
                 print(f"Update available: {latestVer} (Current version: {currentVer})\nYou can download the latest version from: https://github.com/qing762/exitlag-auto-signup/releases/latest\n")
             else:
+                print(f"You are running the latest version: {currentVer}\n")
                 pass
         except Exception as e:
             print(f"An error occurred: {e}")
