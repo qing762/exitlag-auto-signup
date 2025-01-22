@@ -42,7 +42,11 @@ async def main():
             executionCount = int(executionCount)
             break
         except ValueError:
-            print("Please enter a valid number.")
+            if executionCount == "":
+                executionCount = 1
+                break
+            else:
+                print("Please enter a valid number.")
     print()
 
     for x in range(executionCount):
