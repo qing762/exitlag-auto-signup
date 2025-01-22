@@ -1,10 +1,35 @@
 import time
 import requests
 import sys
+import re
 from DrissionPage import ChromiumPage
 
 
 class Main:
+    async def checkPassword(self, password):
+        hasLowercase = re.search(r'[a-z]', password)
+        hasUppercase = re.search(r'[A-Z]', password)
+        hasSpecial = re.search(r'[!@#$%^&*(),.?":{}|<>]', password)
+        hasNumber = re.search(r'[0-9]', password)
+
+        if (len(password) >= 8 and
+                hasLowercase and
+                hasUppercase and
+                hasSpecial and
+                hasNumber):
+            return "\nPassword is valid."
+        else:
+            if len(password) < 8:
+                return "\nPassword does not meet the requirements. Please use at least 8 characters."
+            if not hasLowercase:
+                return "\nPassword does not meet the requirements. Please use a lowercase letter."
+            if not hasUppercase:
+                return "\nPassword does not meet the requirements. Please use an uppercase letter."
+            if not hasSpecial:
+                return "\nPassword does not meet the requirements. Please use at least 1 special character (!@#$%^&*(),.?\":{}|<>)."
+            if not hasNumber:
+                return "\nPassword does not meet the requirements. Please use at least 1 number."
+
     async def checkUpdate(self):
         try:
             resp = requests.get(
