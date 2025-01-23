@@ -17,21 +17,25 @@ async def main():
     print("Checking for updates...")
     await lib.checkUpdate()
 
-    passw = (
-        input(
-            "\033[1m"
-            "\n(RECOMMENDED) Press enter in order to use the default password"
-            "\033[0m"
-            "\nIf you prefer to use your own password, do make sure that you password fulfill the below requirements:\n- Use at least 8 characters\n- Use a lowercase letter\n- Use an uppercase letter\n- Use at least 1 special character (!@#$%...)\n- Use at least 1 number\nPassword: "
+    while True:
+        passw = (
+            input(
+                "\033[1m"
+                "\n(RECOMMENDED) Press enter in order to use the default password"
+                "\033[0m"
+                "\nIf you prefer to use your own password, do make sure that you password fulfill the below requirements:\n- Use at least 8 characters\n- Use a lowercase letter\n- Use an uppercase letter\n- Use at least 1 special character (!@#$%...)\n- Use at least 1 number\nPassword: "
+            )
+            or "Qing762.chy"
         )
-        or "Qing762.chy"
-    )
-
-    if passw != "Qing762.chy":
-        result = await lib.checkPassword(passw)
-        print(result)
-        if "does not meet the requirements" in result:
-            return
+        if passw != "Qing762.chy":
+            result = await lib.checkPassword(passw)
+            print(result)
+            if not result:
+                break
+            elif "does not meet the requirements" not in result:
+                break
+        else:
+            break
 
     accounts = []
     while True:
@@ -124,25 +128,20 @@ async def main():
         if tab.wait.url_change("https://www.exitlag.com/clientarea.php", timeout=60):
             if tab.ele(".alert--title", timeout=60):
                 link = None
-
                 for _ in range(10):
                     result = page.listen.wait()
                     content = result.response.body["emails"]
-
                     if not content:
                         continue
-
                     for _, y in content.items():
                         if (
                             y["subject"]
                             == "[ExitLag] Please confirm your e-mail address"
                         ):
-
                             links = re.findall(
                                 r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
                                 y["body"],
                             )
-
                             for link in links:
                                 if link.startswith(
                                     "https://www.exitlag.com/user/verify"
@@ -153,7 +152,6 @@ async def main():
                             break
                     if link:
                         break
-
                 if link:
                     bar.set_description(
                         f"Verifying email address [{x + 1}/{executionCount}]"
