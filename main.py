@@ -7,6 +7,7 @@ from tqdm.rich import tqdm
 from DrissionPage import Chromium, ChromiumOptions
 from lib.lib import Main, CloudflareBypasser
 
+
 warnings.filterwarnings("ignore", category=TqdmExperimentalWarning)
 
 
@@ -23,21 +24,20 @@ async def main():
                 "\033[1m"
                 "\n(RECOMMENDED) Press enter in order to use the default password"
                 "\033[0m"
-                "\nIf you prefer to use your own password, do make sure that you password fulfill the below requirements:\n- Use at least 8 characters\n- Use a lowercase letter\n- Use an uppercase letter\n- Use at least 1 special character (!@#$%...)\n- Use at least 1 number\nPassword: "
+                "\nIf you prefer to use your own password, do make sure that your password fulfill the below requirements:\n- Use at least 8 characters\n- Use a lowercase letter\n- Use an uppercase letter\n- Use at least 1 special character (!@#$%...)\n- Use at least 1 number\nPassword: "
             )
             or "Qing762.chy"
         )
         if passw != "Qing762.chy":
             result = await lib.checkPassword(passw)
             print(result)
-            if not result:
-                break
-            elif "does not meet the requirements" not in result:
+            if "does not meet the requirements" not in result:
                 break
         else:
             break
 
     accounts = []
+
     while True:
         executionCount = input(
             "\nNumber of accounts to generate (Default: 1): "

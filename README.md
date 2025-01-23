@@ -13,14 +13,12 @@ The process begins by utilizing the [Mails.org](https://mails.org/) service to o
 ## Features
 
 - Be able to prompt to change to your own password instead of using the default one.
+- Password complexity checker for custom password.
 - Error handling.
 - Bypass Cloudflare's bot check.
 - The script does all the job itself, including the captcha (which in the past you need to do it manually)
 - No webdriver required
 - Fast execution time
-
-> **Warning**
-> It is important to note that excessive usage of this tool may result in rate limiting by the API or, in severe cases, IP blocking. To avoid these potential consequences, it is recommended to limit the number of usage. (Maybe 5 times every 10 minutes?)
 
 
 ## Installation / Usage
