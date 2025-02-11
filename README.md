@@ -35,10 +35,6 @@ The process begins by utilizing the [Mails.org](https://mails.org/) service to o
 ```shell
 git clone https://github.com/qing762/exitLag-auto-signup/
 ```
-- Install [Google Chrome](https://google.com/chrome/) (IMPORTANT!)
-```shell
-INSTALL HERE: https://google.com/chrome/
-```
 
 - Install the necessary dependencies:
 ```shell

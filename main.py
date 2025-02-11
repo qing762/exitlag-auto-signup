@@ -2,6 +2,7 @@ import asyncio
 import re
 import warnings
 import time
+import os
 from tqdm import TqdmExperimentalWarning
 from tqdm.rich import tqdm
 from DrissionPage import Chromium, ChromiumOptions
@@ -13,10 +14,32 @@ warnings.filterwarnings("ignore", category=TqdmExperimentalWarning)
 
 async def main():
     lib = Main()
-    port = ChromiumOptions().auto_port()
+    co = ChromiumOptions()
+    co.auto_port()
+    co.incognito()
 
     print("Checking for updates...")
     await lib.checkUpdate()
+
+    while True:
+        browserPath = input(
+            "\033[1m"
+            "\n(RECOMMENDED) Press enter in order to use the default browser path (If you have Chrome installed)"
+            "\033[0m"
+            "\nIf you prefer to use other Chromium browser other than Chrome, please enter its executable path here. (e.g: C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe)"
+            "\nHere are some supported browsers that are tested and able to use:"
+            "\n- Chrome"
+            "\n- Brave"
+            "\nBrowser executable path: "
+        ).replace('"', "").replace("'", "")
+        if browserPath != "":
+            if os.path.exists(browserPath):
+                co.set_browser_path(browserPath)
+                break
+            else:
+                print("Please enter a valid path.")
+        else:
+            break
 
     while True:
         passw = (
@@ -57,7 +80,7 @@ async def main():
         bar = tqdm(total=100)
         bar.set_description(f"Initial setup completed [{x + 1}/{executionCount}]")
         bar.update(20)
-        chrome = Chromium(addr_or_opts=port)
+        chrome = Chromium(addr_or_opts=co)
         page = chrome.get_tab(id_or_num=1)
         page.listen.start("https://mails.org", method="POST")
         page.get("https://mails.org")
