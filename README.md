@@ -12,6 +12,7 @@ The process begins by utilizing the [Mails.org](https://mails.org/) service to o
 
 ## Features
 
+- Able to use any Chromium-based browser.
 - Be able to prompt to change to your own password instead of using the default one.
 - Password complexity checker for custom password.
 - Error handling.
