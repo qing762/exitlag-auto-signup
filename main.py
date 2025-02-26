@@ -15,8 +15,7 @@ warnings.filterwarnings("ignore", category=TqdmExperimentalWarning)
 async def main():
     lib = Main()
     co = ChromiumOptions()
-    co.auto_port()
-    co.incognito()
+    co.incognito().auto_port().mute(True)
 
     print("Checking for updates...")
     await lib.checkUpdate()
@@ -82,6 +81,7 @@ async def main():
         bar.update(20)
         chrome = Chromium(addr_or_opts=co)
         page = chrome.get_tab(id_or_num=1)
+        page.set.window.max()
         page.listen.start("https://mails.org", method="POST")
         page.get("https://mails.org")
 
@@ -124,19 +124,7 @@ async def main():
         tab.ele("#inputNewPassword2").input(passw)
         page.listen.start("https://mails.org", method="POST")
 
-        startTime = time.time()
-        while True:
-            endTime = time.time()
-            if endTime - startTime > 10:
-                print("Failed to find captcha. Exiting...")
-                return
-            else:
-                if tab.ele(".:grecaptcha-badge"):
-                    break
         tab.ele(".custom-checkbox--input checkbox").click()
-
-        bar.set_description(f"Signup process [{x + 1}/{executionCount}]")
-        bar.update(30)
 
         try:
             tab.ele(
@@ -147,6 +135,9 @@ async def main():
         tab.ele(
             ".btn btn-primary btn-block  btn-recaptcha btn-recaptcha-invisible"
         ).click()
+
+        bar.set_description(f"Signup process [{x + 1}/{executionCount}]")
+        bar.update(30)
 
         if tab.wait.url_change("https://www.exitlag.com/clientarea.php", timeout=60):
             if tab.ele(".alert--title", timeout=60):
