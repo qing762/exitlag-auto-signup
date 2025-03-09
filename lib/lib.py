@@ -52,6 +52,13 @@ class Main:
         except Exception as e:
             print(f"An error occurred: {e}")
             pass
+    
+    def testProxy(self, proxy):
+        try:
+            response = requests.get("http://www.google.com", proxies={"http": proxy, "https": proxy}, timeout=5)
+            return True, response.status_code
+        except Exception:
+            return False, "Proxy test failed! Please ensure that the proxy is working correctly. Skipping proxy usage..."
 
 
 class CloudflareBypasser:

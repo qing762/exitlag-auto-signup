@@ -58,6 +58,10 @@ async def main():
         else:
             break
 
+    proxyUsage = input(
+        "\nWould you like to use a proxy?\nPlease enter the proxy IP and port in the format of IP:PORT (Example: http://localhost:1080). Press enter to skip.\nProxy: "
+    )
+
     accounts = []
 
     while True:
@@ -74,6 +78,12 @@ async def main():
             else:
                 print("Please enter a valid number.")
     print()
+
+    if proxyUsage != "":
+        if lib.testProxy(proxyUsage)[0] is True:
+            co.set_proxy(proxyUsage)
+        else:
+            print(lib.testProxy(proxyUsage)[1])
 
     for x in range(executionCount):
         bar = tqdm(total=100)
